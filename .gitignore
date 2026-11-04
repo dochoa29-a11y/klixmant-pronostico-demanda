@@ -6,6 +6,7 @@ datos/
 
 # Entornos y caché
 .venv/
+.venv-app/
 venv/
 __pycache__/
 *.pyc

@@ -16,7 +16,7 @@ Trabajo final de **Analítica de Marketing** (UNAB · TEMA, curso 2228). Pronós
 | §6 Validación (backtesting + holdout) | ✅ |
 | §7 Gráficas | ✅ |
 | §8 Modelo guardado, guía, *model card* y datos de la app | ✅ |
-| Tablero Streamlit | ⏳ (agentes 07–08) — ver [docs/PLAN_DESPLIEGUE_STREAMLIT.md](docs/PLAN_DESPLIEGUE_STREAMLIT.md) |
+| Tablero Streamlit | 🟡 App lista en local (`app/`, agente 07 — [reporte](docs/REPORTE_AGENTE_07_app.md)); falta QA y despliegue en Streamlit Cloud (agente 08) |
 | Póster | ⏳ (después) |
 
 Modelo final: `HGB_redondeo` (HistGradientBoosting Poisson global, scikit-learn), con la cola de catálogos por regla ingenua.
@@ -32,6 +32,7 @@ datos/        Excel original (no se versiona)
 procesado/    Tablas intermedias (prefijo = sección: 3_, 4_, 5_, 6_, 7_)
 figuras/      Gráficas (prefijo = sección) y figuras/poster/
 modelos/      Modelo entrenado (§8): hgb_final.joblib + metadata.json
+app/          App Streamlit (entrypoint app/Inicio.py, páginas en app/paginas/, utils/)
 app/data/     Datos precalculados para la app Streamlit (§8.4; ver app/data/ESQUEMA.md)
 docs/         Reportes de traspaso, diccionario de variables, índice de figuras y plan de despliegue
 ```
@@ -50,6 +51,22 @@ docs/         Reportes de traspaso, diccionario de variables, índice de figuras
 3. Abrir el notebook y ejecutar *Run all* (~17 min; con `RECALCULAR_BACKTESTING = False` baja varios minutos).
    En Colab: agregar la carpeta compartida de Drive como acceso directo en "Mi unidad" (ver reporte 01).
 
+## Cómo correr la app (Streamlit)
+
+Con Python 3.12 (la versión de Streamlit Community Cloud):
+
+```bash
+py -V:3.12 -m venv .venv-app
+```
+```bash
+.venv-app\Scripts\pip install -r app/requirements.txt
+```
+```bash
+.venv-app\Scripts\streamlit run app/Inicio.py
+```
+
+La app solo lee `app/data/` (no necesita el Excel ni el modelo). Detalles en [docs/REPORTE_AGENTE_07_app.md](docs/REPORTE_AGENTE_07_app.md).
+
 ## Documentación en `docs/`
 
 | Archivo | Contenido |
@@ -60,6 +77,7 @@ docs/         Reportes de traspaso, diccionario de variables, índice de figuras
 | `REPORTE_AGENTE_04_seccion_6.md` | Backtesting, holdout e intervalos (cifras del holdout superadas por el reporte 05) |
 | `REPORTE_AGENTE_05_seccion_7.md` | Gráficas, pronóstico vigente y corrección de `early_stopping` |
 | `REPORTE_AGENTE_06_seccion_8.md` | Modelo guardado, pronóstico oficial, documentación y bundle de la app |
+| `REPORTE_AGENTE_07_app.md` | App Streamlit: páginas, verificación, capturas (`docs/capturas_app/`) y notas para el despliegue |
 | `PLAN_DESPLIEGUE_STREAMLIT.md` | Plan para §8, la app Streamlit y su publicación |
 | `guia_generar_pronostico.md` | Cómo generar un pronóstico nuevo (para Klixmant) |
 | `model_card.md` | Uso previsto, métricas, limitaciones y cuándo reentrenar |
