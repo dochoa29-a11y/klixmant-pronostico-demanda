@@ -63,9 +63,11 @@ def pct(x, dec: int = 0, signo: bool = False) -> str:
     return ("+" + s) if (signo and x > 0) else s
 
 
-def dec(x, d: int = 3) -> str:
-    """0.8973 → '0,897' (para WAPE, MASE…)."""
-    return num(x, d)
+def dec(x, d: int = 3, signo: bool = False) -> str:
+    """0.8973 → '0,897' (para WAPE, MASE…). Con signo=True: '+0,220' / '-0,010'
+    (guion ASCII: st.metric lo usa para decidir la flecha del delta)."""
+    s = num(x, d)
+    return ("+" + s) if (signo and s != "—" and x > 0) else s
 
 
 def a_fecha(x) -> date:
@@ -146,6 +148,13 @@ def mostrar(fig: go.Figure, key: str | None = None) -> None:
     """st.plotly_chart con la barra de herramientas mínima."""
     config = {"displaylogo": False, "modeBarButtonsToRemove": ["select2d", "lasso2d", "autoScale2d"],
               "toImageButtonOptions": {"format": "png", "scale": 2}}
+    # El título de plotly es SVG y no se ajusta al ancho: en celular se corta. Se saca a HTML (sí se ajusta)
+    # y se libera el espacio que ocupaba arriba.
+    titulo = fig.layout.title.text if fig.layout.title else None
+    if titulo:
+        st.markdown(f'<div class="fig-titulo">{titulo}</div>', unsafe_allow_html=True)
+        t = fig.layout.margin.t if fig.layout.margin and fig.layout.margin.t is not None else 95
+        fig.update_layout(title=None, margin=dict(t=max(10, t - 45)), height=(fig.layout.height or 420) - 30)
     st.plotly_chart(fig, width="stretch", config=config, key=key)
 
 
@@ -171,6 +180,7 @@ div[data-testid="stMetricValue"] *, div[data-testid="stMetricLabel"] * {
 .tarjeta {border: 1px solid #E6EAF0; border-radius: .6rem; padding: .8rem 1rem; background: #FFFFFF; height: 100%%;}
 .tarjeta h4 {margin: 0 0 .3rem 0; font-size: 1.02rem;}
 .tarjeta p {margin: 0; font-size: .9rem; color: #444;}
+.fig-titulo {font-size: 1.06rem; font-weight: 600; color: #262730; line-height: 1.3; margin: .6rem 0 -.2rem 0;}
 .paso {font-size: .75rem; font-weight: 700; color: %(acento)s; letter-spacing: .04em; text-transform: uppercase;}
 @media (max-width: 640px) {
   .titular {font-size: 1.18rem; padding: .7rem .8rem;}
