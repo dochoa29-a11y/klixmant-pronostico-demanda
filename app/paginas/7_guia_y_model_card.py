@@ -13,8 +13,7 @@ md = cf["metadata_modelo"]
 E.encabezado(
     "Guía y model card",
     f"Úselo para las próximas <b>{cf['constantes']['horizonte_principal']} semanas</b> del top y revise a mano; "
-    "<b>no confíe</b> en él ante eventos que no vio (otro torneo, Black Friday, diciembre) ni en catálogos nuevos.",
-    "📘",
+    "<b>no confíe</b> en él ante eventos que no vio (otro torneo, Black Friday, diciembre) ni en catálogos nuevos."
 )
 E.kpis([
     ("Corte del modelo", E.fecha(md["corte"], True)),
@@ -24,7 +23,7 @@ E.kpis([
     ("Versión de scikit-learn", md["versiones"]["scikit-learn"], None, "El modelo se entrena en el notebook; la app no lo carga."),
 ])
 
-tabs = st.tabs(["🧭 Guía", "🪪 Model card", "📝 Decisiones", "🔤 Diccionario de variables", "📖 Glosario", "📚 Bibliografía", "🖼️ Figuras"])
+tabs = st.tabs(["Guía", "Model card", "Decisiones", "Diccionario de variables", "Glosario", "Bibliografía", "Figuras"])
 
 
 def mostrar_md(nombre: str) -> None:
@@ -45,7 +44,7 @@ with tabs[2]:
 with tabs[3]:
     dic = tabla("diccionario_variables")
     f1, f2 = st.columns([3, 2])
-    q = f1.text_input("🔎 Buscar variable o palabra", key="p7_q", placeholder="p. ej. mundial, lag, dropi")
+    q = f1.text_input("Buscar variable o palabra", key="p7_q", placeholder="p. ej. mundial, lag, dropi")
     grupos = f2.multiselect("Grupo", sorted(dic["grupo"].unique()), key="p7_g")
     d = dic
     if q:
@@ -57,7 +56,7 @@ with tabs[3]:
     E.tabla_st(d.rename(columns={"variable": "Variable", "grupo": "Grupo", "descripcion": "Descripción",
                                  "ventana_temporal": "Ventana temporal", "uso": "Uso"}), height=520)
 with tabs[4]:
-    q = st.text_input("🔎 Buscar término", key="p7_gq")
+    q = st.text_input("Buscar término", key="p7_gq")
     cols = st.columns(2)
     items = [(t, d) for t, d in T.GLOSARIO.items() if not q or q.lower() in (t + d).lower()]
     for i, (t, d) in enumerate(items):
@@ -76,4 +75,3 @@ with tabs[6]:
         E.tabla_st(idx.rename(columns={"fase_plan": "Fase", "grafica_plan": "Gráfica", "archivo": "Archivo",
                                        "poster": "Póster", "existe": "Existe"}))
 
-E.nota_borrador()

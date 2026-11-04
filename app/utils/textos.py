@@ -1,4 +1,4 @@
-"""Textos de la app (BORRADOR: el grupo los reescribe con sus palabras — riesgo Turnitin).
+"""Textos de la app.
 
 Aquí no hay cifras: los números se insertan en cada página desde cifras_clave.json
 o desde las tablas del bundle.
@@ -46,13 +46,13 @@ GLOSARIO = {
 }
 
 PASOS_CRISP = [
-    ("1 · Negocio", "Problema y datos", "Qué decide Klixmant y con qué datos contamos.", "paginas/1_problema_y_datos.py", "📋"),
-    ("2 · Datos", "Exploración", "Concentración, intermitencia y el golpe del Mundial.", "paginas/2_exploracion.py", "🔎"),
-    ("3 · Preparación", "Mundial: base vs evento", "Cuánto fue ritmo normal y cuánto fue fiebre mundialista.", "paginas/3_mundial_base_evento.py", "⚽"),
-    ("3 · Preparación", "Segmentación", "Cuatro perfiles de catálogos según cómo venden.", "paginas/4_segmentacion.py", "🧩"),
-    ("4–5 · Modelo y evaluación", "Modelos y validación", "Qué modelo se escogió y qué tan bien le va.", "paginas/5_modelos_y_validacion.py", "📈"),
-    ("6 · Despliegue", "Plan de producción", "Cuánto cortar y qué tela comprar en las próximas semanas.", "paginas/6_plan_de_produccion.py", "✂️"),
-    ("6 · Despliegue", "Guía y model card", "Cómo usarlo y cuándo no confiar en él.", "paginas/7_guia_y_model_card.py", "📘"),
+    ("1 · Negocio", "Problema y datos", "Qué decide Klixmant y con qué datos contamos.", "paginas/1_problema_y_datos.py"),
+    ("2 · Datos", "Exploración", "Concentración, intermitencia y el golpe del Mundial.", "paginas/2_exploracion.py"),
+    ("3 · Preparación", "Mundial: base vs evento", "Cuánto fue ritmo normal y cuánto fue fiebre mundialista.", "paginas/3_mundial_base_evento.py"),
+    ("3 · Preparación", "Segmentación", "Cuatro perfiles de catálogos según cómo venden.", "paginas/4_segmentacion.py"),
+    ("4–5 · Modelo y evaluación", "Modelos y validación", "Qué modelo se escogió y qué tan bien le va.", "paginas/5_modelos_y_validacion.py"),
+    ("6 · Despliegue", "Plan de producción", "Cuánto cortar y qué tela comprar en las próximas semanas.", "paginas/6_plan_de_produccion.py"),
+    ("6 · Despliegue", "Guía y model card", "Cómo usarlo y cuándo no confiar en él.", "paginas/7_guia_y_model_card.py"),
 ]
 
 COMO_LEER = {
@@ -168,7 +168,7 @@ COMO_LEER = {
     ),
     "plan_heatmap": (
         "Filas = catálogos del top; columnas = semanas. Color = unidades pronosticadas (con el ajuste experto aplicado). "
-        "⚠️ marca los catálogos que el sistema sugiere revisar a mano."
+        "«[revisar]» marca los catálogos que el sistema sugiere revisar a mano."
     ),
     "plan_talla_color": (
         "Unidades a cortar por talla (filas) y color (columnas) en el horizonte elegido. Es el pronóstico del catálogo repartido "

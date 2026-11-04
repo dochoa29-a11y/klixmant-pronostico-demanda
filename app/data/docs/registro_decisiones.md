@@ -1,9 +1,5 @@
 # Registro de decisiones
 
-> ✍️ **Borrador técnico (agente 06, 4-nov-2026).** El grupo debe redactarlo con sus propias palabras (Turnitin).
-> Parte de las tablas del plan de investigación (§2, §5) y de los reportes de traspaso 01–05. La columna **Revisar** marca las decisiones
-> de criterio que el grupo debería discutir o confirmar con Klixmant o con el docente.
-
 | # | Fase | Decisión | Alternativas | Por qué | Dónde | Revisar |
 |---|---|---|---|---|---|---|
 | 1 | Negocio | Pronosticar por **catálogo**, agregar a tela y desagregar a talla × color | Referencia (16 telas) · SKU | Klixmant corta por catálogo; 16 series de tela no sirven para producción | §2, plan §2.2 | Confirmar con el docente ("referencia" en el enunciado) |

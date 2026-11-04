@@ -21,8 +21,7 @@ DESC = {
 
 E.encabezado(
     "Segmentación",
-    f"Los catálogos con historia se agrupan en <b>{k_grupos} perfiles</b>: " + ", ".join(f"<b>{n}</b>" for n in nombres) + ".",
-    "🧩",
+    f"Los catálogos con historia se agrupan en <b>{k_grupos} perfiles</b>: " + ", ".join(f"<b>{n}</b>" for n in nombres) + "."
 )
 cnt = perfil["cluster"].value_counts()
 E.kpis([(f"{n.capitalize()} · catálogos", E.num(cnt.get(n, 0)), None, DESC.get(n)) for n in nombres]
@@ -95,5 +94,4 @@ with der:
 imp = tabla("importancia_permutacion").sort_values("aumento_MAE", ascending=False).reset_index(drop=True)
 puesto = int(imp.index[imp["variable"] == "cluster"][0]) + 1 if (imp["variable"] == "cluster").any() else None
 st.info(f"El clúster entra como variable al modelo: es la **{puesto}.ª más importante** de {len(imp)} en la importancia por permutación "
-        "(página 5). Saber «qué tipo de catálogo es» ayuda a pronosticarlo.", icon="💡")
-E.nota_borrador()
+        "(página 5). Saber «qué tipo de catálogo es» ayuda a pronosticarlo.")

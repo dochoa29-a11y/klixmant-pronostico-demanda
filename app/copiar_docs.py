@@ -11,7 +11,6 @@ No escribe .parquet (el notebook §8.4 borra y reescribe esos).
 from __future__ import annotations
 
 import re
-import shutil
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -44,7 +43,11 @@ def extraer(texto: str, encabezado: str) -> str:
 def main() -> None:
     DESTINO.mkdir(parents=True, exist_ok=True)
     for nombre, origen in COPIAS.items():
-        shutil.copyfile(origen, DESTINO / nombre)
+        texto = origen.read_text(encoding="utf-8")
+        # La app no muestra el aviso de borrador ni emojis de los documentos de trabajo
+        texto = re.sub(r"^> ✍️ \*\*Borrador.*\n(>.*\n)*\n?", "", texto, flags=re.M)
+        texto = re.sub("[\U0001F000-\U0001FAFF☀-➿️]+ ?", "", texto)
+        (DESTINO / nombre).write_text(texto, encoding="utf-8")
         print("copiado", nombre)
     plan = (RAIZ / "Plan_de_Investigacion_Klixmant.md").read_text(encoding="utf-8")
     for nombre, encabezado in EXTRACTOS.items():

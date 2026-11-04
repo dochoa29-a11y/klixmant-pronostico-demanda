@@ -26,8 +26,7 @@ sem_txt = {s: f"S{h} · {E.fecha(s)}" for h, s in enumerate(semanas, start=1)}
 E.encabezado(
     "Plan de producción",
     f"Próximas {H_PRINCIPAL} semanas: el top necesita <b>{E.num(k['pronostico_4s_top'])} uds</b> "
-    f"(el ingenuo diría {E.num(k['pronostico_4s_top_ingenuo'])}) y la cola <b>{E.num(k['pronostico_4s_cola'])}</b>.",
-    "✂️",
+    f"(el ingenuo diría {E.num(k['pronostico_4s_top_ingenuo'])}) y la cola <b>{E.num(k['pronostico_4s_cola'])}</b>."
 )
 
 # ---------------- controles ----------------
@@ -40,7 +39,7 @@ with st.container(border=True):
                                      format_func=lambda h: f"{h} semanas" + (" (orientativo)" if h == H_EXT else "")) or H_PRINCIPAL
     n_hist = f3.slider("Semanas de historia en la gráfica", 8, 38, 12, key="p6_hist")
 
-    with st.expander("🎚️ Ajuste experto (solo en pantalla) — p. ej. Black Friday o una promoción", expanded=False):
+    with st.expander("Ajuste experto (solo en pantalla) — p. ej. Black Friday o una promoción", expanded=False):
         st.caption("Sube o baja el pronóstico en las semanas que elija. No modifica los datos oficiales: solo lo que ve y descarga aquí.")
         a1, a2, a3 = st.columns([3, 2, 2])
         sem_aj = a1.multiselect("Semanas a ajustar", semanas, format_func=lambda s: sem_txt[s], key="p6_sem_aj")
@@ -92,7 +91,7 @@ E.kpis([
     (f"Real de las últimas {horizonte} sem.", f"{E.num(real_ult_h)} uds", None, "Para comparar el ritmo reciente."),
     (f"Cola · próximas {horizonte} sem.", f"{E.num(pcola['pred_aj'].sum())} uds", None,
      f"{E.num(pcola['catalogo'].nunique())} catálogos con regla ingenua."),
-    ("Catálogos para revisar a mano", f"{len(revisar)}", "✅ ninguno" if not revisar else None,
+    ("Catálogos para revisar a mano", f"{len(revisar)}", "ninguno" if not revisar else None,
      f"Modelo e ingenuo difieren más de {E.pct(c['umbral_revision'])} y al menos {c['umbral_revision_uds']} uds en {H_PRINCIPAL} semanas."),
 ])
 
@@ -110,7 +109,7 @@ puente_x = [h.index[-1]] + list(fut["semana"])
 if cat != TOTAL_TOP and fut["lo"].notna().any():
     fig.add_trace(go.Scatter(x=fut["semana"], y=fut["hi_aj"], mode="lines", line=dict(width=0), showlegend=False, hoverinfo="skip"))
     fig.add_trace(go.Scatter(x=fut["semana"], y=fut["lo_aj"], mode="lines", line=dict(width=0), fill="tonexty",
-                             fillcolor="rgba(0,114,178,0.16)", name="Intervalo 10–90 %",
+                             fillcolor=E.rgba(E.VINO, 0.16), name="Intervalo 10–90 %",
                              customdata=fut["hi_aj"], text=E.fechas(fut["semana"]),
                              hovertemplate="Intervalo · %{text}: %{y:,.0f}–%{customdata:,.0f} uds<extra></extra>"))
 fig.add_trace(go.Scatter(x=puente_x, y=[h.values[-1]] + list(fut["pred_ingenuo"]), name="Ingenuo", mode="lines",
@@ -125,7 +124,7 @@ if ajuste_activo:
                              text=[""] + E.fechas(fut["semana"]), hovertemplate="Ajustado · %{text}: %{y:,.1f} uds<extra></extra>"))
 if horizonte > H_PRINCIPAL:
     fig.add_vrect(x0=semanas[H_PRINCIPAL] - pd.Timedelta(days=3.5), x1=semanas[horizonte - 1] + pd.Timedelta(days=3.5),
-                  fillcolor="#9E9E9E", opacity=0.12, line_width=0, layer="below")
+                  fillcolor=E.GRIS, opacity=0.12, line_width=0, layer="below")
     fig.add_annotation(x=semanas[H_PRINCIPAL], y=1, yref="paper", text="semanas 5–8: orientativas", showarrow=False,
                        xanchor="left", yanchor="top", font=dict(size=11, color="#666"))
 fig.add_vline(x=h.index[-1] + pd.Timedelta(days=3.5), line_dash="dash", line_color="#999")
@@ -139,15 +138,15 @@ E.eje_meses(fig, h.index.min(), semanas[horizonte - 1])
 fig.update_xaxes(range=[h.index.min() - pd.Timedelta(days=4), semanas[horizonte - 1] + pd.Timedelta(days=4)])
 E.mostrar(fig, "p6_serie")
 if cat in revisar:
-    st.warning(f"⚠️ **{cat}** está marcado para revisión manual: el modelo y el ingenuo difieren mucho. Revise antes de cortar.")
+    st.warning(f"**{cat}** está marcado para revisión manual: el modelo y el ingenuo difieren mucho. Revise antes de cortar.")
 E.como_leer(T.COMO_LEER["plan_serie"])
 
 # ---------------- 2. heatmap catálogo × semana ----------------
 st.subheader("2 · Mapa del top: catálogo × semana")
 piv = ptop.pivot_table(index="catalogo", columns="semana", values="pred_aj", aggfunc="sum")
 piv = piv.loc[piv.sum(axis=1).sort_values(ascending=False).index]
-filas = [("⚠️ " if c_ in revisar else "") + c_.title() for c_ in piv.index]
-fig = go.Figure(go.Heatmap(z=piv.values, x=[sem_txt[s] for s in piv.columns], y=filas, colorscale="Blues",
+filas = [("[revisar] " if c_ in revisar else "") + c_.title() for c_ in piv.index]
+fig = go.Figure(go.Heatmap(z=piv.values, x=[sem_txt[s] for s in piv.columns], y=filas, colorscale=E.ESCALA_VINO,
                            text=[[E.num(v) for v in fila] for fila in piv.values], texttemplate="%{text}", textfont=dict(size=10),
                            colorbar=dict(title="uds"), hovertemplate="%{y} · %{x}: %{z:,.1f} uds<extra></extra>"))
 fig.update_yaxes(autorange="reversed")
@@ -170,7 +169,7 @@ with izq:
     else:
         pv = pv.reindex([t for t in orden if t in pv.index] + sorted(set(pv.index) - set(orden)))
         pv = pv[pv.sum().sort_values(ascending=False).index]
-        fig = go.Figure(go.Heatmap(z=pv.values, x=list(pv.columns), y=list(pv.index), colorscale="YlGnBu",
+        fig = go.Figure(go.Heatmap(z=pv.values, x=list(pv.columns), y=list(pv.index), colorscale=E.ESCALA_VINO,
                                    text=[[E.num(v, 1) if v < 10 else E.num(v) for v in fila] for fila in pv.values],
                                    texttemplate="%{text}", textfont=dict(size=11), colorbar=dict(title="uds"),
                                    hovertemplate="Talla %{y} · %{x}: %{z:,.1f} uds<extra></extra>"))
@@ -183,7 +182,7 @@ with izq:
 with der:
     st.subheader("4 · Tela (compra de insumo)")
     if ajuste_activo and not ajuste_global:
-        st.caption("ℹ️ El ajuste de un solo catálogo no se propaga a tela (la tabla de tela ya viene sumada sobre catálogos).")
+        st.caption("El ajuste de un solo catálogo no se propaga a tela (la tabla de tela ya viene sumada sobre catálogos).")
     g = tela_h.groupby(["genero", "tela", "color_ref"], as_index=False)["pred_aj"].sum()
     g = g[g["pred_aj"] > 0.05]
     g["insumo"] = g["genero"].map({"H": "Hombre", "D": "Dama"}).fillna(g["genero"]) + " · " + g["tela"]
@@ -213,10 +212,10 @@ with der:
 st.subheader("5 · Banderas de revisión: modelo vs ingenuo")
 if not revisar:
     st.success(f"Ningún catálogo del top requiere revisión manual en este corte (umbral: diferencia > {E.pct(c['umbral_revision'])} "
-               f"y ≥ {c['umbral_revision_uds']} uds en {H_PRINCIPAL} semanas).", icon="✅")
+               f"y ≥ {c['umbral_revision_uds']} uds en {H_PRINCIPAL} semanas).")
 rv = rev.sort_values("pred_modelo", ascending=False)
 E.tabla_st(pd.DataFrame({
-    "Revisar": ["⚠️" if r else "✅" for r in rv["revisar"]],
+    "Revisar": ["Sí" if r else "No" for r in rv["revisar"]],
     "Catálogo": rv["catalogo"],
     f"Modelo ({H_PRINCIPAL} sem.)": rv["pred_modelo"].round(0),
     f"Ingenuo ({H_PRINCIPAL} sem.)": rv["pred_ingenuo"].round(0),
@@ -227,7 +226,7 @@ E.tabla_st(pd.DataFrame({
                    "Diferencia (uds)": st.column_config.NumberColumn(format="%+d")}, height=300)
 
 # ---------------- 6. cola y descargas ----------------
-with st.expander(f"🔎 Buscar en la cola ({E.num(pcola['catalogo'].nunique())} catálogos con regla ingenua)"):
+with st.expander(f"Buscar en la cola ({E.num(pcola['catalogo'].nunique())} catálogos con regla ingenua)"):
     q = st.text_input("Buscar catálogo", key="p6_q", placeholder="p. ej. AUDI")
     cola = pcola.groupby("catalogo", as_index=False)["pred_aj"].sum().sort_values("pred_aj", ascending=False)
     if q:
@@ -245,13 +244,12 @@ def csv(df: pd.DataFrame) -> bytes:
 
 sufijo = f"corte_{pd.Timestamp(pron['corte'].iloc[0]):%Y-%m-%d}_{horizonte}s" + ("_ajustado" if ajuste_activo else "")
 d1, d2, d3 = st.columns(3)
-d1.download_button("⬇️ Catálogo × semana (todos)", csv(p[["corte", "catalogo", "segmento", "semana", "h", "pred", "pred_aj", "pred_ingenuo",
+d1.download_button("Descargar: Catálogo × semana (todos)", csv(p[["corte", "catalogo", "segmento", "semana", "h", "pred", "pred_aj", "pred_ingenuo",
                                                           "lo_aj", "hi_aj", "revisar"]].rename(columns={"pred_aj": "pred_ajustado",
                                                           "lo_aj": "lo", "hi_aj": "hi"})),
                    f"pronostico_catalogo_{sufijo}.csv", "text/csv", width="stretch", key="dl1")
-d2.download_button("⬇️ Talla × color (top)", csv(tc_h.rename(columns={"pred_aj": "pred_tc_ajustado"})),
+d2.download_button("Descargar: Talla × color (top)", csv(tc_h.rename(columns={"pred_aj": "pred_tc_ajustado"})),
                    f"pronostico_talla_color_{sufijo}.csv", "text/csv", width="stretch", key="dl2")
-d3.download_button("⬇️ Tela (insumo)", csv(tela_h.rename(columns={"pred_aj": "pred_tela_ajustado"})),
+d3.download_button("Descargar: Tela (insumo)", csv(tela_h.rename(columns={"pred_aj": "pred_tela_ajustado"})),
                    f"pronostico_tela_{sufijo}.csv", "text/csv", width="stretch", key="dl3")
 
-E.nota_borrador()

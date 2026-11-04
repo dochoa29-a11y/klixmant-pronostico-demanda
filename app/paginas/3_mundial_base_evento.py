@@ -24,8 +24,7 @@ nombres_caen = " y ".join(n.replace("AUTOS_Y_MOTOR", "autos").lower() for n in c
 E.encabezado(
     "Mundial: base vs evento",
     f"El <b>{E.pct(k['pct_evento_colombia'])}</b> de lo que vendió Colombia en la ventana del Mundial fue <b>evento</b>; "
-    f"{nombres_caen} <b>cayeron</b>.",
-    "⚽",
+    f"{nombres_caen} <b>cayeron</b>."
 )
 
 E.kpis([
@@ -61,7 +60,7 @@ fig.add_trace(go.Scatter(x=d["semana"], y=d["y_base"], name="Base (sin Mundial)"
                          line=dict(color=E.COLOR_PRONOSTICO, width=2.5, dash="dash"), text=txt,
                          hovertemplate="Base · %{text}: %{y:,.0f} uds<extra></extra>"))
 fig.add_trace(go.Scatter(x=d["semana"], y=d["y"], name="Venta real", mode="lines", fill="tonexty",
-                         fillcolor="rgba(240,228,66,0.55)", line=dict(color=E.COLOR_REAL, width=2.5),
+                         fillcolor=E.rgba(E.DORADO, 0.45), line=dict(color=E.COLOR_REAL, width=2.5),
                          customdata=d["y_evento"], text=txt,
                          hovertemplate="Real · %{text}: %{y:,.0f} uds<br>Evento: %{customdata:+,.0f} uds<extra></extra>"))
 E.banda_mundial(fig, partidos=True)
@@ -86,7 +85,7 @@ with izq:
     fig.add_vline(x=0, line_color="#666")
     E.layout(fig, "Unidades de evento por catálogo del top (ventana del Mundial)", x="uds de evento neto", alto=600, leyenda=False)
     E.mostrar(fig, "p3_inc_top")
-    st.caption("🟥 familia Colombia · 🟦 resto")
+    st.caption("Dorado: familia Colombia · vinotinto: resto")
     E.como_leer(T.COMO_LEER["incremental"])
 with der:
     r = inc_lin.sort_values("uds_evento_neto")
@@ -110,7 +109,7 @@ with der:
         f"**Demanda desplazada (hipótesis por validar).** Sumando las semanas en que cada línea vendió por encima de su base hay "
         f"**{E.num(pos)}** uds; las semanas por debajo restan **{E.num(-desp)}**. Parte de la caída de motos y autos "
         "podría ser clientes que ese mes compraron la camiseta de Colombia en vez de su prenda habitual. "
-        "Con estos datos no se puede probar: conviene validarlo con Klixmant.", icon="🔄")
+        "Con estos datos no se puede probar: conviene validarlo con Klixmant.")
 
 st.divider()
 izq, der = st.columns(2, gap="large")
@@ -120,7 +119,7 @@ with izq:
     texto = [[f"{E.num(v)}<br>{E.pct(p)}" for v, p in zip(fr, fp)] for fr, fp in zip(piv.values, pct_piv.values)]
     fig = go.Figure(go.Heatmap(
         z=piv.values, x=[f"k = {c}" for c in piv.columns], y=[f"{s} sem. previas" for s in piv.index],
-        colorscale="YlOrBr", text=texto, texttemplate="%{text}", hovertemplate="%{y} · %{x}: %{z:,.0f} uds<extra></extra>",
+        colorscale=E.ESCALA_DORADO, text=texto, texttemplate="%{text}", hovertemplate="%{y} · %{x}: %{z:,.0f} uds<extra></extra>",
         colorbar=dict(title="uds"),
     ))
     E.layout(fig, "Sensibilidad: el evento Colombia cambia poco", alto=380, leyenda=False)
@@ -143,4 +142,3 @@ with der:
 with st.expander("Partidos de Colombia en el Mundial"):
     E.tabla_st(pd.DataFrame([{"Fecha": E.fecha(p["fecha"], True), "Partido": p["evento"]} for p in c["partidos_colombia"]]))
 
-E.nota_borrador()

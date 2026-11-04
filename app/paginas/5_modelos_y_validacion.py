@@ -24,8 +24,7 @@ col = k["colombia_post_mundial"]
 E.encabezado(
     "Modelos y validación",
     f"El modelo <b>no arrastra el Mundial</b> (Colombia después del evento: {E.num(col[final])} uds vs {E.num(col['real'])} reales), "
-    f"pero por catálogo <b>empata con el ingenuo</b> (WAPE {E.dec(wf)} vs {E.dec(wi)}).",
-    "📈",
+    f"pero por catálogo <b>empata con el ingenuo</b> (WAPE {E.dec(wf)} vs {E.dec(wi)})."
 )
 tot = k["holdout_wape_total_semanal"]
 E.kpis([
@@ -41,7 +40,7 @@ E.kpis([
 ])
 
 ce = cf["correccion_early_stopping"]
-with st.expander("🔧 Corrección de `early_stopping` (por qué estas cifras difieren del reporte 04)"):
+with st.expander("Corrección de `early_stopping` (por qué estas cifras difieren del reporte 04)"):
     st.markdown("El modelo de producción se entrenaba con una parada temprana que lo cortaba en "
                 f"**{ce['antes']['n_iter_produccion']}** iteraciones; ahora usa **{ce['ahora']['n_iter_produccion']}**. "
                 "Las cifras vigentes son las de la columna «ahora».")
@@ -52,8 +51,8 @@ with st.expander("🔧 Corrección de `early_stopping` (por qué estas cifras di
     E.tabla_st(pd.DataFrame([{"Métrica": n, "Antes (no vigente)": f(ce["antes"][key]), "Ahora": f(ce["ahora"][key])} for n, key, f in filas]))
 
 st.write("")
-tabs = st.tabs(["🪜 Escalera", "🧪 Backtesting", "🗺️ Por origen", "📏 Por horizonte", "🔒 Holdout", "🏍️ Caso Honda",
-                "↕️ Intervalos", "🧠 Variables", "🧩 Segmentos"],
+tabs = st.tabs(["Escalera", "Backtesting", "Por origen", "Por horizonte", "Holdout", "Caso Honda",
+                "Intervalos", "Variables", "Segmentos"],
                key="p5_tabs", on_change="rerun")
 
 with tabs[0]:
@@ -88,7 +87,7 @@ with tabs[1]:
     if tabs[1].open:  # pestaña perezosa: solo se dibuja la abierta
         d = bt.set_index("modelo").reindex([m for m in ORDEN_BT if m in bt_i.index]).reset_index()
         vista = pd.DataFrame({
-            "Modelo": [("⭐ " if m == final else "") + E.nombre_modelo(m) for m in d["modelo"]],
+            "Modelo": [E.nombre_modelo(m) + (" (final)" if m == final else "") for m in d["modelo"]],
             "WAPE top": d["WAPE_top"].map(E.dec), "Sesgo": d["sesgo_top"].map(lambda v: E.pct(v, 1, True)),
             "MASE": d["MASE_top"].map(lambda v: E.dec(v, 2)),
             "WAPE antes": d["WAPE_top_antes"].map(E.dec), "WAPE toca evento": d["WAPE_top_evento"].map(E.dec),
@@ -97,7 +96,7 @@ with tabs[1]:
             "Orígenes que gana al ingenuo": d["origenes_gana_al_ingenuo"].map(lambda v: f"{v}/{len(c['cortes_backtesting'])}"),
             "P(gana al ingenuo)": d["prob_gana_bootstrap"].map(lambda v: E.pct(v) if pd.notna(v) else "—"),
         })
-        st.dataframe(vista.style.apply(lambda r: ["background-color:#E8F1FA; font-weight:600" if "⭐" in r["Modelo"] else "" for _ in r], axis=1),
+        st.dataframe(vista.style.apply(lambda r: ["background-color:#F6E9EB; font-weight:600" if "(final)" in r["Modelo"] else "" for _ in r], axis=1),
                      width="stretch", hide_index=True)
         st.caption(f"Colombia real después del Mundial: {E.num(col['real'])} uds. IC 90 % de la diferencia de WAPE final − ingenuo: "
                    f"{h6['final vs ingenuo: IC 90 % dif. WAPE, P(gana), orígenes ganados'][0].replace('.', ',')} (incluye el 0 → empate).")
@@ -117,7 +116,7 @@ with tabs[2]:
         o = tabla("wape_por_origen_backtesting").sort_values("corte")
         mods = [m for m in ["ingenuo", "media_movil_4", "ETS", "SARIMAX", "HGB_poisson", "HGB_redondeo", "HGB_ingenuo"] if m in o.columns]
         z = o[mods].T.values
-        fig = go.Figure(go.Heatmap(z=z, x=E.fechas(o["corte"]), y=[E.nombre_modelo(m) for m in mods], colorscale="RdYlGn_r",
+        fig = go.Figure(go.Heatmap(z=z, x=E.fechas(o["corte"]), y=[E.nombre_modelo(m) for m in mods], colorscale=E.ESCALA_VINO,
                                    zmin=0, zmax=min(2.5, float(np.nanmax(z))), text=[[E.dec(v, 2) for v in fila] for fila in z],
                                    texttemplate="%{text}", textfont=dict(size=10), colorbar=dict(title="WAPE"),
                                    hovertemplate="%{y} · origen %{x}: WAPE %{z:.3f}<extra></extra>"))
@@ -202,7 +201,7 @@ with tabs[5]:
         hp = tabla("holdout_predicciones_top")
         d = hp[hp["catalogo"] == peor]
         real = d.drop_duplicates("semana").sort_values("semana")
-        fig = go.Figure(go.Bar(x=real["semana"], y=real["y"], name="Venta real", marker_color="#BDBDBD",
+        fig = go.Figure(go.Bar(x=real["semana"], y=real["y"], name="Venta real", marker_color=E.GRIS_CLARO,
                                text=E.fechas(real["semana"]), hovertemplate="Real · %{text}: %{y:,.0f} uds<extra></extra>"))
         for m in [final, "ingenuo"]:
             x = d[d["modelo"] == m].sort_values("semana")
@@ -242,7 +241,7 @@ with tabs[6]:
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=d["semana"], y=d["hi"], mode="lines", line=dict(width=0), showlegend=False, hoverinfo="skip"))
             fig.add_trace(go.Scatter(x=d["semana"], y=d["lo"], mode="lines", line=dict(width=0), fill="tonexty",
-                                     fillcolor="rgba(0,114,178,0.18)", name="Intervalo 10–90 %", hoverinfo="skip"))
+                                     fillcolor=E.rgba(E.VINO, 0.16), name="Intervalo 10–90 %", hoverinfo="skip"))
             fig.add_trace(go.Scatter(x=d["semana"], y=d["pred"], mode="lines", name="Pronóstico", line=dict(color=E.COLOR_PRONOSTICO, width=2.5),
                                      customdata=np.stack([d["lo"], d["hi"]], axis=1), text=E.fechas(d["semana"]),
                                      hovertemplate="%{text}: %{y:,.0f} uds (%{customdata[0]:,.0f}–%{customdata[1]:,.0f})<extra></extra>"))
@@ -291,4 +290,3 @@ with tabs[8]:
         E.como_leer("Barras agrupadas: cada color es un modelo. Compare dentro de cada grupo; la cola tiene WAPE alto por catálogo "
                     "porque vende a saltos, pero sumada se pronostica bien.")
 
-E.nota_borrador()

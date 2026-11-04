@@ -12,8 +12,7 @@ col = k["colombia_post_mundial"]
 E.encabezado(
     "Pronóstico de demanda · Klixmant S.A.S.",
     f"Tras el Mundial, el modelo pronosticó <b>{E.num(col['HGB_redondeo'])} uds</b> de Colombia "
-    f"(se vendieron {E.num(col['real'])}); una media móvil habría pedido <b>{E.num(col['media_movil_4'])}</b>.",
-    "🧵",
+    f"(se vendieron {E.num(col['real'])}); una media móvil habría pedido <b>{E.num(col['media_movil_4'])}</b>."
 )
 
 E.kpis([
@@ -54,7 +53,7 @@ with der:
     completas = s[~s["parcial"]]
     fig = go.Figure(go.Scatter(
         x=completas["semana"], y=completas["TOTAL"], mode="lines", line=dict(color=E.COLOR_REAL, width=2.5),
-        fill="tozeroy", fillcolor="rgba(0,114,178,0.10)", text=E.fechas(completas["semana"]),
+        fill="tozeroy", fillcolor=E.rgba(E.VINO, 0.10), text=E.fechas(completas["semana"]),
         hovertemplate="Semana del %{text}: %{y:,.0f} uds<extra></extra>", name="Total",
     ))
     E.banda_mundial(fig)
@@ -69,30 +68,29 @@ st.caption("Cada paso es una página. Haga clic para entrar.")
 filas = [T.PASOS_CRISP[:4], T.PASOS_CRISP[4:]]
 for fila in filas:
     cols = st.columns(4)
-    for c, (paso, titulo, desc, ruta, icono) in zip(cols, fila):
+    for c, (paso, titulo, desc, ruta) in zip(cols, fila):
         with c.container(border=True):
             st.markdown(f'<div class="paso">{paso}</div>', unsafe_allow_html=True)
-            st.page_link(ruta, label=f"**{titulo}**", icon=icono)
+            st.page_link(ruta, label=f"**{titulo}**")
             st.caption(desc)
 
 st.divider()
 c1, c2, c3 = st.columns(3)
 with c1:
-    st.markdown("#### 🎯 Qué pidió Klixmant")
+    st.markdown("#### Qué pidió Klixmant")
     st.markdown("1. Pronóstico **por catálogo**.\n2. Separar demanda **base** y de **evento**.\n3. Llegar a **talla × color** (y a tela).")
 with c2:
-    st.markdown("#### ✅ Qué se entrega")
+    st.markdown("#### Qué se entrega")
     st.markdown(
         f"- Pronóstico de **{k['top_n']}** catálogos con modelo y el resto con regla.\n"
         f"- Próximas {constantes()['horizonte_principal']} semanas: **{E.num(k['pronostico_4s_top'])}** uds en el top y **{E.num(k['pronostico_4s_cola'])}** en la cola.\n"
         "- Desagregación a talla × color y a tela, con descarga en CSV."
     )
 with c3:
-    st.markdown("#### ⚠️ Lo honesto")
+    st.markdown("#### Lo honesto")
     bt = k["wape_top_backtesting"]
     st.markdown(
         f"- Por catálogo, el modelo **no le gana con claridad al ingenuo** (WAPE {E.dec(bt['HGB_redondeo'])} vs {E.dec(bt['ingenuo'])}).\n"
         "- Su valor: **no arrastra el Mundial** y acierta mejor el **total semanal** "
         f"({E.dec(k['holdout_wape_total_semanal']['HGB_redondeo'])} vs {E.dec(k['holdout_wape_total_semanal']['ingenuo'])})."
     )
-E.nota_borrador()

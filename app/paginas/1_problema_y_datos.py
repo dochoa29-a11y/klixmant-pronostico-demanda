@@ -16,8 +16,7 @@ n_ok = int((cuadre["diferencia"] == 0).sum())
 E.encabezado(
     "Problema y datos",
     "Hoy se compra tela y se programa el corte <b>mirando el agregado y sin modelo</b>: "
-    "cuando el evento termina, <b>el inventario ya quedó comprado</b>.",
-    "📋",
+    "cuando el evento termina, <b>el inventario ya quedó comprado</b>."
 )
 
 E.kpis([
@@ -25,11 +24,11 @@ E.kpis([
     ("Unidades", E.num(val["unidades"])),
     ("Remisiones", E.num(val["remisiones"])),
     ("Días con venta", E.num(val["dias_con_venta"])),
-    ("Cifras de control que cuadran", f"{n_ok} / {len(cuadre)}", "✅ todas" if n_ok == len(cuadre) else None),
+    ("Cifras de control que cuadran", f"{n_ok} / {len(cuadre)}", "todas" if n_ok == len(cuadre) else None),
 ])
 
 st.write("")
-t1, t2, t3, t4 = st.tabs(["🎯 El problema y las decisiones", "✅ Cuadre de cifras", "🧹 Limpieza", "🪜 Jerarquía de la demanda"])
+t1, t2, t3, t4 = st.tabs(["El problema y las decisiones", "Cuadre de cifras", "Limpieza", "Jerarquía de la demanda"])
 
 with t1:
     izq, der = st.columns([2, 3], gap="large")
@@ -55,6 +54,7 @@ with t2:
         cifra=cuadre["cifra"].str.replace("_", " ").str.capitalize(),
         esperado=cuadre["esperado"].map(E.num), obtenido=cuadre["obtenido"].map(E.num),
         diferencia=cuadre["diferencia"].map(E.num),
+        cuadra=(cuadre["diferencia"] == 0).map({True: "Sí", False: "No"}),
     ).rename(columns={"cifra": "Cifra de control", "esperado": "Esperado (Klixmant)", "obtenido": "Obtenido (notebook)",
                       "diferencia": "Diferencia", "cuadra": "¿Cuadra?"})
     E.tabla_st(vista)
@@ -65,7 +65,7 @@ with t3:
     with izq:
         r = reglas.sort_values("unidades")
         fig = go.Figure(go.Bar(
-            x=r["unidades"], y=r["regla"], orientation="h", marker_color=E.OKABE_ITO[0],
+            x=r["unidades"], y=r["regla"], orientation="h", marker_color=E.VINO,
             text=[E.num(v) for v in r["unidades"]], textposition="outside", cliponaxis=False,
             customdata=r["decision"], hovertemplate="%{y}<br>%{x:,.0f} uds · %{customdata}<extra></extra>",
         ))
@@ -86,16 +86,15 @@ with t4:
     dot = f"""
     digraph G {{
       rankdir=LR; bgcolor="transparent";
-      node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, color="#BFD3E6", fillcolor="#F4F8FC"];
-      edge [color="#7F8FA6"];
-      total [label="Total\\n{E.num(demanda)} uds de demanda", fillcolor="#DCEAF7"];
+      node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, color="#D9C7B8", fillcolor="#FBF7F2"];
+      edge [color="#8A817C"];
+      total [label="Total\\n{E.num(demanda)} uds de demanda", fillcolor="#F3E3E5"];
       canal [label="Canal\\nEffi · Dropi"];
       tela  [label="Tela (referencia)\\n{h4['telas base (2.º token de referencia)']} telas base\\n→ compra de insumo"];
-      cat   [label="Catálogo\\n{E.num(len(maestro))} normalizados\\n★ nivel que se modela", fillcolor="#FFE9B3", color="#E69F00", penwidth=2];
+      cat   [label="Catálogo\\n{E.num(len(maestro))} normalizados\\nnivel que se modela", fillcolor="#F6EBCB", color="#B0841A", penwidth=2];
       tc    [label="Talla × color\\n{tc['talla_std'].nunique()} tallas · {tc['color'].nunique()} colores (top)\\n→ orden de corte"];
       total -> canal -> tela -> cat -> tc;
     }}"""
     st.graphviz_chart(dot, width="stretch")
     E.como_leer(T.COMO_LEER["jerarquia"])
 
-E.nota_borrador()

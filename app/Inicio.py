@@ -10,7 +10,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="Klixmant · Pronóstico de demanda",
-    page_icon="🧵",
+    page_icon=":material/insights:",
     layout="wide",
     initial_sidebar_state="auto",  # abierto en escritorio, colapsado en celular
 )
@@ -23,18 +23,18 @@ P = AQUI / "paginas"
 
 paginas = {
     "Resumen": [
-        st.Page(P / "0_inicio.py", title="Inicio", icon="🏠", default=True),
+        st.Page(P / "0_inicio.py", title="Inicio", icon="", default=True),
     ],
     "La historia": [
-        st.Page(P / "1_problema_y_datos.py", title="1 · Problema y datos", icon="📋"),
-        st.Page(P / "2_exploracion.py", title="2 · Exploración", icon="🔎"),
-        st.Page(P / "3_mundial_base_evento.py", title="3 · Mundial: base vs evento", icon="⚽"),
-        st.Page(P / "4_segmentacion.py", title="4 · Segmentación", icon="🧩"),
-        st.Page(P / "5_modelos_y_validacion.py", title="5 · Modelos y validación", icon="📈"),
+        st.Page(P / "1_problema_y_datos.py", title="1 · Problema y datos"),
+        st.Page(P / "2_exploracion.py", title="2 · Exploración"),
+        st.Page(P / "3_mundial_base_evento.py", title="3 · Mundial: base vs evento"),
+        st.Page(P / "4_segmentacion.py", title="4 · Segmentación"),
+        st.Page(P / "5_modelos_y_validacion.py", title="5 · Modelos y validación"),
     ],
     "Herramienta": [
-        st.Page(P / "6_plan_de_produccion.py", title="6 · Plan de producción", icon="✂️"),
-        st.Page(P / "7_guia_y_model_card.py", title="7 · Guía y model card", icon="📘"),
+        st.Page(P / "6_plan_de_produccion.py", title="6 · Plan de producción"),
+        st.Page(P / "7_guia_y_model_card.py", title="7 · Guía y model card"),
     ],
 }
 
@@ -43,11 +43,11 @@ estilo.css()
 
 k = kpi()
 with st.sidebar:
-    st.markdown("### 🧵 Klixmant S.A.S.")
+    st.markdown('<div class="marca">KLIXMANT <span>S.A.S.</span></div>', unsafe_allow_html=True)
     st.caption("Pronóstico semanal de demanda por catálogo · Analítica de Marketing (UNAB)")
     st.info(textos.AVISO_DATOS.format(corte=estilo.fecha(k["fecha_corte_datos"], anio=True),
-                                      semana=estilo.fecha(k["ultima_semana_completa"], anio=True)), icon="🗓️")
-    st.caption("✍️ Textos en borrador. Modelo: "
-               f"`{k['modelo_final']}` (top {k['top_n']}) · cola: `{k['modelo_cola']}`.")
+                                      semana=estilo.fecha(k["ultima_semana_completa"], anio=True)), icon=None)
+    st.caption(f"Modelo: {textos.NOMBRE_MODELO.get(k['modelo_final'], k['modelo_final']).lower()} para el top {k['top_n']}; "
+               f"{textos.NOMBRE_MODELO.get(k['modelo_cola'], k['modelo_cola']).lower()} para la cola.")
 
 pg.run()

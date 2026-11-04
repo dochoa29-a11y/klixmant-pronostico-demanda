@@ -1,9 +1,5 @@
 # Model card — Pronóstico semanal de demanda por catálogo (Klixmant S.A.S.)
 
-> ✍️ **Borrador técnico (agente 06, 4-nov-2026).** El grupo debe redactarlo con sus propias palabras (Turnitin).
-> Formato basado en Mitchell, M. et al. (2019), *Model cards for model reporting*, FAT\* '19, 220–229. https://doi.org/10.1145/3287560.3287596
-> **Cifras posteriores a la corrección de `early_stopping`** (reporte 05 §2). Las tablas 3.1–3.2 del reporte 04 ya no están vigentes.
-
 ---
 
 ## 1. Detalles del modelo

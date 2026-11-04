@@ -25,8 +25,7 @@ n_insuf = int((clasif["tipo"] == "insuficiente").sum())
 E.encabezado(
     "Exploración",
     f"La demanda está <b>concentrada</b> ({k['top_n']} catálogos = {E.pct(k['pct_unidades_top'])} de las unidades), "
-    f"es <b>errática</b> y el <b>Mundial</b> la domina.",
-    "🔎",
+    f"es <b>errática</b> y el <b>Mundial</b> la domina."
 )
 
 E.kpis([
@@ -41,7 +40,7 @@ E.kpis([
 ])
 
 st.write("")
-tabs = st.tabs(["📅 Serie semanal", "🏔️ Concentración", "🎲 Patrón ADI/CV²", "🗓️ Día × semana", "🔀 Canales", "⏳ Ciclo de vida", "👕 Tallas"],
+tabs = st.tabs(["Serie semanal", "Concentración", "Patrón ADI/CV²", "Día × semana", "Canales", "Ciclo de vida", "Tallas"],
                key="p2_tabs", on_change="rerun")
 
 # --- Serie semanal por canal ---
@@ -60,7 +59,7 @@ with tabs[0]:
         p = serie[serie["parcial"]]
         if len(p):
             fig.add_trace(go.Scatter(x=p["semana"], y=p["TOTAL"], mode="markers+text", name="Semana parcial",
-                                     marker=dict(symbol="x", size=11, color="#D55E00"), text=["parcial"], textposition="top center",
+                                     marker=dict(symbol="x", size=11, color=E.VINO_OSCURO), text=["parcial"], textposition="top center",
                                      hovertemplate="Semana parcial: %{y:,.0f} uds<extra></extra>"))
         E.banda_mundial(fig)
         pico = serie.loc[serie["TOTAL"].idxmax()]
@@ -92,7 +91,7 @@ with tabs[1]:
         fig.update_yaxes(title_text="unidades", secondary_y=False)
         fig.update_yaxes(title_text="% acumulado", tickformat=".0%", range=[0, 1.02], secondary_y=True, showgrid=False)
         E.mostrar(fig, "p2_pareto")
-        st.caption("🟥 familia Colombia · 🟦 resto")
+        st.caption("Dorado: familia Colombia · vinotinto: resto")
         E.como_leer(T.COMO_LEER["pareto"])
 
 # --- ADI / CV² ---
@@ -132,7 +131,7 @@ with tabs[3]:
         dd["dia"] = dd["fecha"].dt.day_of_week
         piv = dd.pivot_table(index="dia", columns="semana", values="cantidad_total", aggfunc="sum").reindex(range(7))
         texto = [[f"{E.fecha(s + pd.Timedelta(days=int(d)))}: {E.num(v) if pd.notna(v) else 'sin venta'}" for s, v in zip(piv.columns, piv.loc[d])] for d in piv.index]
-        fig = go.Figure(go.Heatmap(z=piv.values, x=piv.columns, y=E.DIAS, colorscale="Blues", text=texto,
+        fig = go.Figure(go.Heatmap(z=piv.values, x=piv.columns, y=E.DIAS, colorscale=E.ESCALA_VINO, text=texto,
                                    hovertemplate="%{text} uds<extra></extra>", colorbar=dict(title="uds")))
         fig.update_yaxes(autorange="reversed")
         E.banda_mundial(fig, ventana=False, texto=True)
@@ -214,4 +213,3 @@ with tabs[6]:
             st.caption(f"Distancia de variación total media en el top: {E.num(h3['TV talla media en el top (0 = estable)'], 2)}. "
                        "Con una mezcla estable, repartir el pronóstico por proporciones es razonable.")
 
-E.nota_borrador()

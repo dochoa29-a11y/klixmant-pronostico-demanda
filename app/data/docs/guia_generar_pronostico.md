@@ -1,8 +1,5 @@
 # Guía: cómo generar un pronóstico de demanda
 
-> ✍️ **Borrador técnico (agente 06, 4-nov-2026).** El grupo debe redactarlo con sus propias palabras antes de entregarlo (Turnitin).
-> Las cifras de ejemplo son de la corrida con corte al 28-sep-2026.
-
 **Para quién:** la persona de Klixmant que planea compras de tela y cortes. **Cada cuánto:** cada semana (lunes) para el pronóstico,
 cada mes para reentrenar el modelo. **Tiempo:** unos 20 minutos de computador; la revisión manual depende de cuántos catálogos se marquen.
 
@@ -17,7 +14,7 @@ cada mes para reentrenar el modelo. **Tiempo:** unos 20 minutos de computador; l
 | Entorno | Python 3.12 o superior con las librerías de `requirements.txt` (pandas ≥ 3, scikit-learn, statsmodels, joblib, pyarrow). En Google Colab ya vienen casi todas. |
 | Modelo guardado | `modelos/hgb_final.joblib` y `modelos/metadata.json` (los genera la celda 8.1). |
 
-> ⚠️ La sección 3.1 del notebook **cuadra las cifras de control** de la documentación de Klixmant de 2026-10-07. Con un archivo nuevo esas
+> La sección 3.1 del notebook **cuadra las cifras de control** de la documentación de Klixmant de 2026-10-07. Con un archivo nuevo esas
 > cifras cambian: hay que actualizar `CONTROL` (celda 3.1.1), `CONTROL_MENSUAL` (3.1.2) y `CONTROL_TOP15` (3.1.3) con las cifras de la
 > documentación nueva, o el notebook se detiene en el `assert` de la celda 3.1.4. Si Klixmant no entrega cifras de control, se puede
 > comentar ese `assert`, pero se pierde la verificación de que la lectura es correcta.

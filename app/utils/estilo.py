@@ -1,8 +1,4 @@
-"""Paleta, formato es-CO y piezas visuales comunes (plotly + Streamlit).
-
-La paleta sale de cifras_clave.json → paleta (la misma del notebook: Okabe-Ito,
-COLOR_CANAL, COLOR_FAMILIA, ESTILO_MODELO).
-"""
+"""Paleta, formato es-CO y piezas visuales comunes (plotly + Streamlit)."""
 from __future__ import annotations
 
 import math
@@ -13,25 +9,54 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from utils import textos
-from utils.datos import cifras, constantes
+from utils.datos import constantes
 
 # ---------- paleta ----------
-_P = cifras()["paleta"]
-OKABE_ITO: list[str] = _P["okabe_ito"]
-COLOR_CANAL: dict = _P["color_canal"]
-COLOR_FAMILIA: dict = _P["color_familia"]
-COLOR_EVENTO: str = _P["color_evento"]
-COLOR_PRONOSTICO: str = _P["color_pronostico"]
-COLOR_INGENUO: str = _P["color_ingenuo"]
-_DASH = {"-": "solid", "--": "dash", ":": "dot", "-.": "dashdot"}
-ESTILO_MODELO: dict = {m: {"color": e["color"], "dash": _DASH.get(e["linea"], "solid")}
-                       for m, e in _P["estilo_modelo"].items()}
-COLOR_REAL = "#000000"
-GRIS = "#9E9E9E"
-COLOR_CLUSTER = {"evento": OKABE_ITO[3], "base": OKABE_ITO[0], "en declive": OKABE_ITO[4],
-                 "base errática": OKABE_ITO[1], "cola": GRIS}
-COLOR_LINEA = {"COLOMBIA": COLOR_FAMILIA["COLOMBIA"], "FUTBOL": OKABE_ITO[2], "MOTOS": OKABE_ITO[0],
-               "AUTOS_Y_MOTOR": OKABE_ITO[5], "PERSONALIZADO": OKABE_ITO[4], "OTROS": GRIS}
+# Identidad visual: vinotinto, dorado, rojo, negro y blanco cálido. Los 4 tonos de serie
+# (vino, dorado, azul acero, rosa) pasan el validador de color (CVD ΔE >= 8, contraste >= 3:1).
+VINO = "#962A3B"          # acento principal: modelo final, pronóstico, marca
+VINO_OSCURO = "#5C1424"   # sidebar y títulos
+ROJO = "#B3261E"          # alertas puntuales
+DORADO = "#B0841A"        # segundo tono: Colombia, Dropi, evento
+DORADO_CLARO = "#E3CB86"  # bandas y rellenos
+AZUL = "#1F6CAB"          # contraste frío (uso escaso)
+ROSA = "#C9688A"
+NEGRO = "#1A1A1A"
+GRIS = "#8A817C"          # gris cálido: ingenuo, inactivo
+GRIS_CLARO = "#C9C1BA"
+CREMA = "#FBF7F2"
+BORDE = "#E8DDD3"
+
+# Orden fijo de tonos para series sin color asignado (no se cicla más allá de 8).
+OKABE_ITO: list[str] = [VINO, DORADO, AZUL, ROSA, GRIS, "#C8B8A6", DORADO_CLARO, NEGRO]
+COLOR_CANAL: dict = {"EFFI": VINO, "DROPI": DORADO, "TOTAL": NEGRO}
+COLOR_FAMILIA: dict = {"COLOMBIA": DORADO, "RESTO": VINO}
+COLOR_EVENTO: str = DORADO_CLARO
+COLOR_PRONOSTICO: str = VINO
+COLOR_INGENUO: str = GRIS
+ESTILO_MODELO: dict = {
+    "HGB_redondeo": {"color": VINO, "dash": "solid"},
+    "HGB_poisson": {"color": ROSA, "dash": "solid"},
+    "HGB+ingenuo": {"color": AZUL, "dash": "solid"},
+    "HGB_ingenuo": {"color": AZUL, "dash": "solid"},
+    "ingenuo": {"color": GRIS, "dash": "dot"},
+    "media_movil_4": {"color": DORADO, "dash": "dash"},
+    "ETS": {"color": "#D4A94A", "dash": "dash"},
+    "SARIMAX": {"color": "#6E9CC8", "dash": "dash"},
+}
+COLOR_REAL = NEGRO
+COLOR_CLUSTER = {"evento": DORADO, "base": VINO, "en declive": GRIS, "base errática": ROSA, "cola": GRIS_CLARO}
+COLOR_LINEA = {"COLOMBIA": DORADO, "FUTBOL": AZUL, "MOTOS": VINO, "AUTOS_Y_MOTOR": ROSA,
+               "PERSONALIZADO": "#D4A94A", "OTROS": GRIS_CLARO}
+# Escalas secuenciales de un solo tono (claro -> oscuro)
+ESCALA_VINO = [[0, "#FBF3F3"], [0.35, "#E2A9B1"], [0.7, "#A8394B"], [1, "#4A0F1C"]]
+ESCALA_DORADO = [[0, "#FCF8EC"], [0.4, "#EBD49A"], [0.75, "#B88A22"], [1, "#6B4D0B"]]
+
+
+def rgba(hex_: str, a: float) -> str:
+    h = hex_.lstrip("#")
+    return f"rgba({int(h[0:2], 16)},{int(h[2:4], 16)},{int(h[4:6], 16)},{a})"
+
 
 MESES = constantes()["meses_es"]
 DIAS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
@@ -90,19 +115,20 @@ def fechas(serie) -> list[str]:
 
 
 # ---------- plotly ----------
-FUENTE = "Source Sans Pro, Segoe UI, sans-serif"
+FUENTE = "Inter, Segoe UI, sans-serif"
 
 
 def layout(fig: go.Figure, titulo: str | None = None, y: str | None = None, x: str | None = None,
            alto: int = 420, leyenda: bool = True) -> go.Figure:
     fig.update_layout(
         template="plotly_white",
-        title=dict(text=titulo, x=0, xanchor="left", y=0.985, yref="container", yanchor="top", font=dict(size=17)) if titulo else None,
-        font=dict(family=FUENTE, size=13, color="#262730"),
+        title=dict(text=titulo, x=0, xanchor="left", y=0.985, yref="container", yanchor="top", font=dict(size=17, color=VINO_OSCURO)) if titulo else None,
+        font=dict(family=FUENTE, size=13, color="#2B2422"),
         separators=",.",  # coma decimal, punto de miles
         height=alto,
         margin=dict(l=10, r=10, t=(95 if leyenda else 55) if titulo else (50 if leyenda else 20), b=10),
-        hoverlabel=dict(font_family=FUENTE),
+        hoverlabel=dict(font_family=FUENTE, bgcolor="#FFFFFF", bordercolor=BORDE, font_color=NEGRO),
+        colorway=OKABE_ITO, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         showlegend=leyenda,
         legend=dict(orientation="h", yanchor="bottom", y=1.0, xanchor="left", x=0, title=None),
     )
@@ -111,7 +137,8 @@ def layout(fig: go.Figure, titulo: str | None = None, y: str | None = None, x: s
     if x:
         fig.update_xaxes(title_text=x)
     fig.update_xaxes(showgrid=False, separatethousands=True)
-    fig.update_yaxes(gridcolor="#ECECEC", zerolinecolor="#BDBDBD", separatethousands=True)
+    fig.update_xaxes(linecolor=GRIS_CLARO, tickfont=dict(color="#5E5551"))
+    fig.update_yaxes(gridcolor="#EFE7E0", zerolinecolor=GRIS_CLARO, separatethousands=True, tickfont=dict(color="#5E5551"))
     return fig
 
 
@@ -132,12 +159,12 @@ def banda_mundial(fig: go.Figure, ventana: bool = True, partidos: bool = False, 
     kw = dict(row=fila, col=col) if fila else {}
     if ventana:
         v0, v1 = c["ventana_evento"]
-        fig.add_vrect(x0=v0, x1=v1, fillcolor=COLOR_EVENTO, opacity=0.13, line_width=0, layer="below", **kw)
+        fig.add_vrect(x0=v0, x1=v1, fillcolor=COLOR_EVENTO, opacity=0.22, line_width=0, layer="below", **kw)
     m0, m1 = c["mundial"]
-    fig.add_vrect(x0=m0, x1=m1, fillcolor=COLOR_EVENTO, opacity=0.30, line_width=0, layer="below", **kw)
+    fig.add_vrect(x0=m0, x1=m1, fillcolor=COLOR_EVENTO, opacity=0.45, line_width=0, layer="below", **kw)
     if texto and not fila:
-        fig.add_annotation(x=m0, y=1, yref="paper", text="⚽ Mundial",
-                           showarrow=False, xanchor="left", yanchor="top", font=dict(size=11, color="#6B5B00"))
+        fig.add_annotation(x=m0, y=1, yref="paper", text="Mundial",
+                           showarrow=False, xanchor="left", yanchor="top", font=dict(size=11, color="#6B4D0B"))
     if partidos:
         for p in c["partidos_colombia"]:
             fig.add_vline(x=p["fecha"], line_width=1, line_dash="dot", line_color=COLOR_FAMILIA["COLOMBIA"], **kw)
@@ -166,30 +193,57 @@ def tabla_st(df: pd.DataFrame, **kw) -> None:
 
 CSS = """
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 .block-container {padding-top: 2.2rem; padding-bottom: 3rem; max-width: 1400px;}
-.titular {font-size: 1.55rem; line-height: 1.35; font-weight: 650; color: #1F2A44;
-          border-left: 6px solid %(acento)s; background: #F4F8FC; padding: .9rem 1.1rem;
-          border-radius: 0 .5rem .5rem 0; margin: .3rem 0 1.1rem 0;}
-.titular b {color: %(acento)s;}
-.borrador {font-size: .78rem; color: #8A6D00; background: #FFF8DC; padding: .15rem .5rem; border-radius: .3rem;}
-div[data-testid="stMetric"] {background: #FFFFFF; border: 1px solid #E6EAF0; border-radius: .6rem;
-          padding: .7rem .9rem; box-shadow: 0 1px 2px rgba(0,0,0,.04);}
-div[data-testid="stMetricValue"] {font-size: clamp(1.15rem, 2.1vw, 1.75rem);}
-div[data-testid="stMetricValue"] *, div[data-testid="stMetricLabel"] * {
+h1, h2, h3 {font-family: 'Playfair Display', Georgia, serif !important; color: %(vino_oscuro)s !important; letter-spacing: -.01em;}
+h4, h5 {color: %(vino_oscuro)s !important;}
+h1 {font-weight: 700 !important; border-bottom: 3px solid %(dorado)s; padding-bottom: .35rem;}
+hr {border-color: %(borde)s !important;}
+
+/* Frase-conclusión */
+.titular {font-size: 1.42rem; line-height: 1.4; font-weight: 500; color: #FFFFFF;
+          background: linear-gradient(120deg, %(vino_oscuro)s 0%%, %(vino)s 100%%);
+          border-left: 6px solid %(dorado)s; padding: 1rem 1.3rem; border-radius: .6rem; margin: .4rem 0 1.2rem 0;
+          box-shadow: 0 6px 18px rgba(92,20,36,.18);}
+.titular b {color: #F2D88E; font-weight: 700;}
+
+/* KPI */
+div[data-testid="stMetric"] {background: #FFFFFF; border: 1px solid %(borde)s; border-top: 4px solid %(vino)s;
+          border-radius: .6rem; padding: .75rem .95rem; box-shadow: 0 2px 6px rgba(92,20,36,.06);}
+[data-testid="stMetricLabel"] p {color: #6B605B !important; font-weight: 600; font-size: .82rem !important;}
+[data-testid="stMetricLabel"] {width: 100%% !important;}
+[data-testid="stMetricLabel"] > div {overflow: visible !important;}
+div[data-testid="stMetricValue"] {font-size: clamp(1.15rem, 2.1vw, 1.8rem); color: %(vino_oscuro)s; font-weight: 700;}
+div[data-testid="stMetricValue"] *, [data-testid="stMetricLabel"] * {
           white-space: normal !important; overflow: visible !important; text-overflow: clip !important;}
-.tarjeta {border: 1px solid #E6EAF0; border-radius: .6rem; padding: .8rem 1rem; background: #FFFFFF; height: 100%%;}
+
+/* Tarjetas, contenedores, pestañas y desplegables */
+.tarjeta {border: 1px solid %(borde)s; border-radius: .6rem; padding: .8rem 1rem; background: #FFFFFF; height: 100%%;}
 .tarjeta h4 {margin: 0 0 .3rem 0; font-size: 1.02rem;}
-.tarjeta p {margin: 0; font-size: .9rem; color: #444;}
-.fig-titulo {font-size: 1.06rem; font-weight: 600; color: #262730; line-height: 1.3; margin: .6rem 0 -.2rem 0;}
-.paso {font-size: .75rem; font-weight: 700; color: %(acento)s; letter-spacing: .04em; text-transform: uppercase;}
+.tarjeta p {margin: 0; font-size: .9rem; color: #4A403C;}
+.stTabs [data-baseweb="tab-list"] {gap: .25rem; border-bottom: 1px solid %(borde)s;}
+.stTabs [data-baseweb="tab"] {font-weight: 600; color: #6B605B;}
+.stTabs [aria-selected="true"] {color: %(vino)s !important;}
+.stTabs [data-baseweb="tab-highlight"] {background-color: %(dorado)s !important; height: 3px;}
+div[data-testid="stExpander"] details {border-color: %(borde)s !important; background: #FFFFFF;}
+div[data-testid="stExpander"] summary p {color: %(vino)s; font-weight: 600;}
+.fig-titulo {font-size: 1.04rem; font-weight: 600; color: %(vino_oscuro)s; line-height: 1.3; margin: .6rem 0 -.2rem 0;}
+.paso {font-size: .72rem; font-weight: 700; color: %(dorado)s; letter-spacing: .08em; text-transform: uppercase;}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {border-right: 3px solid %(dorado)s;}
+.marca {font-family: 'Playfair Display', Georgia, serif; font-size: 1.45rem; font-weight: 700; color: #FFFFFF;
+        letter-spacing: .06em; border-bottom: 2px solid %(dorado)s; padding-bottom: .3rem; margin-bottom: .4rem;}
+.marca span {color: #E3CB86; font-size: .95rem; letter-spacing: .02em;}
+
 @media (max-width: 640px) {
-  .titular {font-size: 1.18rem; padding: .7rem .8rem;}
-  h1 {font-size: 1.9rem !important;}
+  .titular {font-size: 1.12rem; padding: .75rem .9rem;}
+  h1 {font-size: 1.8rem !important;}
   div[data-testid="stMetricValue"] {font-size: 1.35rem;}
   .block-container {padding-left: 1rem; padding-right: 1rem;}
 }
 </style>
-""" % {"acento": COLOR_PRONOSTICO}
+""" % {"vino": VINO, "vino_oscuro": VINO_OSCURO, "dorado": DORADO, "borde": BORDE}
 
 
 def css() -> None:
@@ -202,7 +256,7 @@ def encabezado(titulo: str, conclusion_html: str, icono: str = "") -> None:
     with c1:
         st.title(f"{icono} {titulo}".strip())
     with c2:
-        with st.popover("📖 Glosario", width="stretch"):
+        with st.popover("Glosario", width="stretch"):
             for termino, definicion in textos.GLOSARIO.items():
                 st.markdown(f"**{termino}.** {definicion}")
     st.markdown(f'<div class="titular">{conclusion_html}</div>', unsafe_allow_html=True)
@@ -222,8 +276,3 @@ def kpis(items: list[tuple]) -> None:
 def como_leer(texto: str) -> None:
     with st.expander("¿Cómo leer esta gráfica?"):
         st.markdown(texto)
-
-
-def nota_borrador() -> None:
-    st.markdown('<span class="borrador">✍️ Texto en borrador: el grupo lo redactará con sus palabras.</span>',
-                unsafe_allow_html=True)
