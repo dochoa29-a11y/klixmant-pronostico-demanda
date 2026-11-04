@@ -1,0 +1,54 @@
+variable,grupo,descripcion,ventana_temporal,uso
+catalogo,id,Nombre del catálogo normalizado (4.1.1),—,id / opcional como categoría
+semana,id,Lunes de la semana (lunes a domingo),—,id
+y,objetivo,"Unidades vendidas en la semana (sin canceladas, por fecha_remision)",semana t,objetivo
+y_dropi,auxiliar,Unidades del canal Dropi en la semana,semana t,no usar (información del presente)
+y_base,objetivo,Demanda base: venta real fuera de la ventana; interpolación entre medianas dentro (4.5),semana t,objetivo alterno
+y_evento,objetivo,y − y_base (negativo = demanda desplazada),semana t,objetivo alterno / análisis
+lag_1,rezago,Unidades de la semana t−1,t−1,modelo
+lag_2,rezago,Unidades de la semana t−2,t−2,modelo
+lag_3,rezago,Unidades de la semana t−3,t−3,modelo
+lag_4,rezago,Unidades de la semana t−4,t−4,modelo
+media_4,ventana,Media de unidades de las 4 semanas anteriores,t−4…t−1,modelo
+media_8,ventana,Media de unidades de las 8 semanas anteriores,t−8…t−1,modelo
+desv_4,ventana,Desviación estándar de las 4 semanas anteriores,t−4…t−1,modelo
+desv_8,ventana,Desviación estándar de las 8 semanas anteriores,t−8…t−1,modelo
+semanas_desde_ultima_venta,ventana,Semanas entre t y la última semana con venta antes de t,pasado,modelo
+pct_dropi_8,canal,Participación de Dropi en las unidades de las 8 semanas anteriores (NaN si no hubo venta),t−8…t−1,modelo
+n_festivos,calendario,Festivos de Colombia en la semana,semana t (conocida),modelo
+quincena,calendario,"1 si la semana incluye día 15, 30 (o 28-feb)",semana t (conocida),modelo
+fecha_comercial,calendario,"1 si la semana tiene Día de la Madre, del Padre, Amor y Amistad, Black Friday o Nochebuena",semana t,modelo
+prima,calendario,"1 si la semana incluye el pago de la prima (30-jun, 20-dic)",semana t,modelo
+semana_anio,calendario,Semana ISO del año,semana t,opcional (fuera de rango en el horizonte)
+mes,calendario,Mes,semana t,opcional (fuera de rango en el horizonte)
+pre_mundial,evento,1 en las 2 semanas antes de la primera semana del Mundial,semana t,modelo
+semana_mundial,evento,1 si la semana tiene algún día del Mundial (11-jun a 19-jul),semana t,modelo
+dias_mundial,evento,Días del Mundial dentro de la semana,semana t,modelo
+n_partidos_colombia,evento,Partidos de Colombia en la semana,semana t,modelo
+colombia_en_torneo,evento,1 desde la primera semana del Mundial hasta la semana de la eliminación (7-jul),semana t,modelo
+colombia_x_evento,evento,es_colombia × (pre_mundial o semana_mundial),semana t,modelo
+semanas_desde_fin_mundial,evento,Semanas desde la última semana del Mundial (tope 8),semana t,opcional
+ventana_evento,evento,1 dentro de la ventana usada en 4.5 (pre + Mundial),semana t,no usar (diagnóstico)
+con_historia,calendario,1 si la semana está dentro del periodo con datos,semana t,no usar (diagnóstico)
+familia,catálogo,COLOMBIA o RESTO (regex de §0.5),estática,no usar (usar es_colombia)
+es_colombia,catálogo,1 si el catálogo es de la familia Colombia,estática,modelo
+linea,catálogo,"Línea de producto: COLOMBIA, MOTOS, AUTOS_Y_MOTOR, FUTBOL, PERSONALIZADO, OTROS (4.2.1)",estática,modelo (categórica)
+tipo_prenda,catálogo,"CUELLO_ALTO, BUZO o SIN_DATO (desde el nombre)",estática,modelo (categórica)
+tela_principal,catálogo,Tela con más unidades del catálogo (2.º token de referencia),toda la historia,modelo (categórica)
+pct_tela_principal,catálogo,% de unidades del catálogo en su tela principal,toda la historia,modelo
+n_telas,catálogo,Número de telas en que se ha cortado el catálogo,toda la historia,modelo
+pct_dama,catálogo,% de unidades del catálogo en referencias de dama (prefijo D),toda la historia,modelo
+tipo_proceso,catálogo,"ES, BOR o AMBOS (ficha; si falta, sufijo del SKU; si no, SIN_DATO)",estática,modelo (categórica)
+reflectivo,catálogo,"1 si es reflectivo (ficha; si falta, por el nombre)",estática,modelo
+personalizado,catálogo,"1 si es personalizado (ficha; si falta, por la línea)",estática,modelo
+no_rotativo,catálogo,1 si la ficha lo marca como no rotativo (NaN sin ficha),estática,modelo
+planchadas,catálogo,Planchadas del diseño (ficha; NaN si falta),estática,modelo
+puntadas,catálogo,Puntadas del bordado (ficha; NaN si falta),estática,modelo
+tiene_ficha,catálogo,1 si el catálogo tiene ficha en la hoja CATALOGOS,estática,modelo
+cluster,catálogo,Grupo K-means del perfil de demanda; 'cola' si no es elegible (4.4),semanas < holdout,modelo (categórica; recalcular por pliegue)
+primera_semana,ciclo de vida,Semana de la primera venta,estática,no usar (usar semanas_desde_lanzamiento)
+semanas_desde_lanzamiento,ciclo de vida,Semanas entre la primera venta y t,semana t,modelo
+es_lanzamiento,ciclo de vida,1 en las 4 primeras semanas de vida,semana t,modelo
+rank,segmento,Posición del catálogo por unidades (semanas completas),toda la historia,no usar (selección del top)
+top_n,segmento,True para el top 20,toda la historia,filtro
+conjunto,segmento,entrenamiento / holdout / futuro,—,filtro

@@ -1,0 +1,13 @@
+cifra,esperado,obtenido,diferencia,cuadra
+lineas,29899,29899,0,✅
+unidades,29919,29919,0,✅
+remisiones,21826,21826,0,✅
+catalogos_con_venta,806,806,0,✅
+cortes,435,435,0,✅
+lineas_devolucion,4061,4061,0,✅
+lineas_canceladas,370,370,0,✅
+dias_con_venta,266,266,0,✅
+unidades_effi,21877,21877,0,✅
+unidades_dropi,8042,8042,0,✅
+fechas_carga_distintas,216,216,0,✅
+lineas_despachadas,29514,29514,0,✅

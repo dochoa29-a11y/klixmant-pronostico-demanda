@@ -1,0 +1,20 @@
+# Datos originales de Klixmant (confidenciales)
+*.xlsx
+*.xls
+Klixmant_Documentacion_Base_de_Datos_UNAB.pdf
+datos/
+
+# Entornos y caché
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Sistema / Office
+~$*
+desktop.ini
+Thumbs.db

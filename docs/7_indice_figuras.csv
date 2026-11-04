@@ -1,0 +1,38 @@
+fase_plan,grafica_plan,archivo,poster,existe
+EDA,"Serie semanal total y por canal, con banda del Mundial",figuras/3_2_01_serie_semanal_canal.png,False,True
+EDA,Curva de Pareto de catálogos,figuras/3_2_02_pareto_catalogos.png,False,True
+EDA,Curva de Pareto de catálogos,figuras/poster/P1_concentracion.png,True,True
+EDA,Dispersión ADI vs CV² con cuadrantes,figuras/3_2_03_adi_cv2.png,False,True
+EDA,STL de la serie total y de 2–3 catálogos top,figuras/3_2_04_stl_diaria_total.png,False,True
+EDA,STL de la serie total y de 2–3 catálogos top,figuras/3_2_05_stl_top3.png,False,True
+EDA,ACF / PACF,figuras/3_2_06_acf_pacf_semanal.png,False,True
+EDA,Heatmap día de la semana × semana,figuras/3_2_08_heatmap_dia_semana.png,False,True
+EDA,Barras al 100 % de talla dentro de los catálogos top,figuras/3_2_11_mezcla_tallas_top4.png,False,True
+Preparación,Perfiles promedio por clúster K-means,figuras/4_4_02_perfiles_cluster.png,False,True
+Modelo,"Real vs pronóstico con intervalo, 3–4 catálogos top",figuras/6_5_02_holdout_real_vs_pronostico.png,False,True
+Modelo,"Real vs pronóstico con intervalo, 3–4 catálogos top",figuras/7_2_04_historia_y_pronostico.png,False,True
+Modelo,Base vs evento apilado,figuras/4_5_01_base_evento_top6.png,False,True
+Modelo,Base vs evento apilado,figuras/4_5_02_base_evento_familia.png,False,True
+Modelo,Base vs evento apilado,figuras/5_7_01_base_evento_dos_rutas.png,False,True
+Modelo,Base vs evento apilado,figuras/poster/P2_mundial_base_evento.png,True,True
+Evaluación,Barras de WAPE / MASE por modelo,figuras/5_5_01_wape_por_modelo.png,False,True
+Evaluación,Barras de WAPE / MASE por modelo,figuras/6_2_01_wape_por_origen_backtesting.png,False,True
+Evaluación,Barras de WAPE / MASE por modelo,figuras/6_2_02_wape_por_horizonte.png,False,True
+Evaluación,Barras de WAPE / MASE por modelo,figuras/poster/P3_colombia_despues_mundial.png,True,True
+Evaluación,Error por catálogo (ordenado),figuras/6_6_01_error_por_catalogo_holdout.png,False,True
+Explicabilidad,Importancia por permutación,figuras/5_9_01_importancia_permutacion.png,False,True
+Negocio,Tabla/heatmap catálogo × talla × semana pronosticada,figuras/7_2_01_pronostico_catalogo_semana.png,False,True
+Negocio,Tabla/heatmap catálogo × talla × semana pronosticada,figuras/7_2_02_pronostico_catalogo_talla.png,False,True
+Negocio,Tabla/heatmap catálogo × talla × semana pronosticada,figuras/7_2_03_pronostico_tela.png,False,True
+Negocio,Tabla/heatmap catálogo × talla × semana pronosticada,figuras/poster/P4_plan_produccion.png,True,True
+EDA,complementaria,figuras/3_1_01_fecha_carga_vs_remision.png,False,True
+EDA,complementaria,figuras/3_2_07_mundial_familia.png,False,True
+EDA,complementaria,figuras/3_2_09_dia_semana_dia_mes.png,False,True
+EDA,complementaria,figuras/3_2_10_participacion_dropi.png,False,True
+EDA,complementaria,figuras/3_2_12_ciclo_vida_catalogos.png,False,True
+EDA,complementaria,figuras/3_3_01_calendario_eventos.png,False,True
+Preparación,complementaria,figuras/4_4_01_kmeans_codo_silueta.png,False,True
+Preparación,complementaria,figuras/4_6_01_correlacion_variables.png,False,True
+Modelo,complementaria,figuras/5_5_02_wape_modelo_origen.png,False,True
+Modelo,complementaria,figuras/5_6_01_real_vs_pronostico_fin_mundial.png,False,True
+Evaluación,complementaria,figuras/6_5_01_cobertura_intervalos.png,False,True

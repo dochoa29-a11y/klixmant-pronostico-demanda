@@ -1,0 +1,11 @@
+# Versiones con las que se ejecutó el notebook en local (Python 3.14.7). En Colab ya vienen casi todas.
+pandas>=3.0
+numpy>=2.0
+matplotlib>=3.9
+seaborn>=0.13
+statsmodels>=0.14
+openpyxl>=3.1
+scikit-learn>=1.5
+torch  # LSTM de §5 (opcional: sin torch el notebook omite el LSTM). Local CPU: pip install torch --index-url https://download.pytorch.org/whl/cpu
+jupyter
+gdown  # solo Colab, si la carpeta de Drive no está como acceso directo
