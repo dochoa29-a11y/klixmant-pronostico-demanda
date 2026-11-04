@@ -2,7 +2,9 @@
 
 Trabajo final de **Analítica de Marketing** (UNAB · TEMA, curso 2228). Pronóstico semanal de unidades **por catálogo**, con separación de la demanda **base** y la demanda **de evento** (Mundial 2026) y desagregación a **talla × color** y a **tela** para planear compras y cortes.
 
-> 🔒 **Confidencial.** Los datos son de Klixmant S.A.S. Este repositorio es privado. El Excel original y la documentación de la base de datos **no se suben** (ver `.gitignore`).
+**🌐 App publicada:** <https://klixmant-pronostico.streamlit.app/> (Streamlit Community Cloud, rama `main`).
+
+> 🔒 **Confidencial.** Los datos son de Klixmant S.A.S. Este repositorio es privado; la **app sí es pública** para quien tenga el enlace (decisión del grupo, ver [reporte 08](docs/REPORTE_AGENTE_08_despliegue.md) §4) y muestra solo datos agregados (catálogo × semana). El Excel original y la documentación de la base de datos **no se suben** (ver `.gitignore`).
 >
 > ✍️ **Turnitin.** El texto markdown del notebook y de `docs/` es un borrador técnico: el grupo debe redactarlo con sus propias palabras antes de entregar.
 
@@ -16,7 +18,7 @@ Trabajo final de **Analítica de Marketing** (UNAB · TEMA, curso 2228). Pronós
 | §6 Validación (backtesting + holdout) | ✅ |
 | §7 Gráficas | ✅ |
 | §8 Modelo guardado, guía, *model card* y datos de la app | ✅ |
-| Tablero Streamlit | 🟡 App lista en local (`app/`, agente 07 — [reporte](docs/REPORTE_AGENTE_07_app.md)); falta QA y despliegue en Streamlit Cloud (agente 08) |
+| Tablero Streamlit | ✅ Publicado en <https://klixmant-pronostico.streamlit.app/> (app: agente 07 — [reporte](docs/REPORTE_AGENTE_07_app.md); QA y despliegue: agente 08 — [reporte](docs/REPORTE_AGENTE_08_despliegue.md)) |
 | Póster | ⏳ (después) |
 
 Modelo final: `HGB_redondeo` (HistGradientBoosting Poisson global, scikit-learn), con la cola de catálogos por regla ingenua.
@@ -67,6 +69,8 @@ py -V:3.12 -m venv .venv-app
 
 La app solo lee `app/data/` (no necesita el Excel ni el modelo). Detalles en [docs/REPORTE_AGENTE_07_app.md](docs/REPORTE_AGENTE_07_app.md).
 
+**En la nube:** <https://klixmant-pronostico.streamlit.app/>. Cada `git push` a `main` la redespliega sola; configuración y cómo redesplegar a mano en [docs/REPORTE_AGENTE_08_despliegue.md](docs/REPORTE_AGENTE_08_despliegue.md).
+
 ## Documentación en `docs/`
 
 | Archivo | Contenido |
@@ -78,6 +82,7 @@ La app solo lee `app/data/` (no necesita el Excel ni el modelo). Detalles en [do
 | `REPORTE_AGENTE_05_seccion_7.md` | Gráficas, pronóstico vigente y corrección de `early_stopping` |
 | `REPORTE_AGENTE_06_seccion_8.md` | Modelo guardado, pronóstico oficial, documentación y bundle de la app |
 | `REPORTE_AGENTE_07_app.md` | App Streamlit: páginas, verificación, capturas (`docs/capturas_app/`) y notas para el despliegue |
+| `REPORTE_AGENTE_08_despliegue.md` | QA de la app, despliegue en Streamlit Community Cloud, acceso y cómo redesplegar |
 | `PLAN_DESPLIEGUE_STREAMLIT.md` | Plan para §8, la app Streamlit y su publicación |
 | `guia_generar_pronostico.md` | Cómo generar un pronóstico nuevo (para Klixmant) |
 | `model_card.md` | Uso previsto, métricas, limitaciones y cuándo reentrenar |
