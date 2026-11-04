@@ -1,0 +1,508 @@
+{
+  "generado": "2026-11-04T15:42:42",
+  "nota": "Cifras posteriores a la corrección de early_stopping (reporte 05 §2). Ningún número de la app se escribe a mano.",
+  "kpi": {
+    "unidades_totales": 29919,
+    "lineas": 29899,
+    "catalogos_con_venta": 806,
+    "catalogos_normalizados": 798,
+    "unidades_demanda_sin_canceladas": 29549,
+    "meses_historia": 9,
+    "fecha_primera_venta": "2026-01-13",
+    "fecha_ultima_venta": "2026-10-06",
+    "fecha_corte_datos": "2026-10-06",
+    "ultima_semana_completa": "2026-09-28",
+    "semanas_completas": 38,
+    "top_n": 20,
+    "pct_unidades_top": 0.7696411580807394,
+    "catalogos_pareto": 792,
+    "uds_evento_colombia": 6582.0,
+    "pct_evento_colombia": 0.8699444885011896,
+    "uds_evento_resto_neto": -280.0,
+    "colombia_post_mundial": {
+      "real": 49.0,
+      "HGB_redondeo": 75.25210744590936,
+      "ingenuo": 84.0,
+      "ETS": 312.9038016551335,
+      "SARIMAX": 1871.3448079424581,
+      "media_movil_4": 3990.0
+    },
+    "modelo_final": "HGB_redondeo",
+    "modelo_cola": "ingenuo",
+    "ingenuo_empata": true,
+    "wape_top_backtesting": {
+      "HGB+ingenuo": 0.8796933551408229,
+      "HGB_redondeo": 0.8973127165259897,
+      "HGB_poisson": 0.8991199214768238,
+      "ingenuo": 0.907063989427463,
+      "ETS": 0.9336870559270872,
+      "SARIMAX": 1.0177714082421763,
+      "media_movil_4": 1.0781323272370722
+    },
+    "wape_top_post_backtesting": {
+      "HGB+ingenuo": 0.5760693797531048,
+      "HGB_redondeo": 0.5845550987372313,
+      "HGB_poisson": 0.5914242169310802,
+      "ingenuo": 0.5996718621821165,
+      "ETS": 0.7095159160638557,
+      "SARIMAX": 1.265626770910693,
+      "media_movil_4": 2.1843724364232977
+    },
+    "holdout_wape_top_h4": {
+      "ETS": 0.47049430958498045,
+      "ingenuo": 0.47586206896551725,
+      "media_movil_4": 0.49181034482758623,
+      "HGB+ingenuo": 0.5853559257971981,
+      "HGB_redondeo": 0.6959471390535561,
+      "HGB_poisson": 0.7074188677307415,
+      "SARIMAX": 1.1799667352616998
+    },
+    "holdout_wape_top_h6": {
+      "ETS": 0.42674045452120696,
+      "ingenuo": 0.43263964950711936,
+      "media_movil_4": 0.4531763417305586,
+      "HGB+ingenuo": 0.5377148735904269,
+      "HGB_redondeo": 0.6516402801889754,
+      "HGB_poisson": 0.6699103669547738,
+      "SARIMAX": 1.1889534746101695
+    },
+    "holdout_sesgo_top_h6": {
+      "ETS": -0.07409161057065725,
+      "ingenuo": -0.050383351588170866,
+      "media_movil_4": -0.03313253012048193,
+      "HGB+ingenuo": 0.07999330790681657,
+      "HGB_redondeo": 0.19058548719599588,
+      "HGB_poisson": 0.21036996740180405,
+      "SARIMAX": 0.641876768568769
+    },
+    "holdout_wape_total_semanal": {
+      "ETS": 0.16595717985396183,
+      "ingenuo": 0.17038052793966404,
+      "media_movil_4": 0.15741058164781166,
+      "HGB+ingenuo": 0.09166057554500638,
+      "HGB_redondeo": 0.10959931042082068,
+      "HGB_poisson": 0.20320948201937103,
+      "SARIMAX": 0.3911782582813068
+    },
+    "cobertura_intervalo_holdout": 0.925,
+    "pronostico_4s_top": 1443.8237721953155,
+    "pronostico_4s_top_ingenuo": 1372.0,
+    "pronostico_4s_cola": 984.0,
+    "real_ultimas_4s_top": 1275.0,
+    "catalogos_revisar": []
+  },
+  "h3": {
+    "unidades de demanda (sin canceladas)": 29549,
+    "semanas completas": 38,
+    "% volumen top 15 / top 20": "71.5% / 76.9%",
+    "catálogos clase A (80 %)": 25,
+    "tipos ADI/CV² en el top": {
+      "errática": 8,
+      "irregular": 5,
+      "suave": 5,
+      "intermitente": 2
+    },
+    "tipos ADI/CV² en toda la base": {
+      "insuficiente": 601,
+      "intermitente": 124,
+      "irregular": 44,
+      "errática": 19,
+      "suave": 10
+    },
+    "familia Colombia: semana prom. durante / antes": 3.01,
+    "resto: semana prom. durante / antes": 0.71,
+    "familia Colombia: semana prom. después / antes": 0.01,
+    "% Dropi antes / durante / después": {
+      "1_antes": 0.231,
+      "2_durante": 0.411,
+      "3_despues": 0.187
+    },
+    "TV talla media en el top (0 = estable)": 0.09,
+    "catálogos inactivos (sin venta 4 semanas)": 615,
+    "fuerza tendencia / patrón semanal (STL diaria)": [
+      0.81,
+      0.45
+    ]
+  },
+  "h4": {
+    "catálogos normalizados (crudos → finales)": "804 → 798",
+    "telas base (2.º token de referencia)": 16,
+    "catálogos con más de una tela": 9,
+    "ficha CATALOGOS (catálogos / % volumen)": "233 / 89.6%",
+    "panel (filas, catálogos, % semanas en cero)": [
+      17722,
+      792,
+      "83.7%"
+    ],
+    "ventana del evento": "2026-05-25 → 2026-07-13",
+    "evento neto familia Colombia (uds, % de su venta en la ventana)": [
+      6582,
+      "87%"
+    ],
+    "evento neto resto (uds; negativo = desplazada)": -280,
+    "sensibilidad evento Colombia (mín–máx)": "6,009–6,750",
+    "k de K-means / grupos": [
+      4,
+      [
+        "evento",
+        "base",
+        "en declive",
+        "base errática"
+      ]
+    ],
+    "variables del modelo": 37,
+    "prueba de no fuga": "superada"
+  },
+  "h5": {
+    "validación preliminar (orígenes, horizonte)": "6 orígenes 2026-04-27 → 2026-07-20, 4 semanas; holdout sin tocar",
+    "candidato top / regla cola": "HGB+ingenuo / ingenuo",
+    "WAPE top: candidato / HGB_poisson / ingenuo": [
+      0.963,
+      0.955,
+      1.006
+    ],
+    "WAPE top después del Mundial: candidato / HGB_poisson / ingenuo": [
+      0.576,
+      0.591,
+      0.6
+    ],
+    "sesgo top del candidato": 0.118,
+    "Colombia después del Mundial (uds reales vs. HGB / SARIMAX / media móvil)": [
+      49,
+      90,
+      1871,
+      3990
+    ],
+    "peor modelo (WAPE top)": "LSTM (1.65)",
+    "cobertura del intervalo 10–90 % (nominal 80 %)": "49%",
+    "base en la ventana, catálogos existentes (ruta 1 / ruta 2)": "COLOMBIA 980 / 1,194 · RESTO 3,008 / 2,837",
+    "evento Colombia, catálogos existentes (ruta 1 / ruta 2)": "5,102 / 2,236",
+    "WAPE al bajar a talla × color (semana / 4 semanas)": "0.61 → 1.02 / 0.70",
+    "3 variables más importantes": [
+      "desv_4",
+      "cluster",
+      "lag_1"
+    ]
+  },
+  "h6": {
+    "backtesting (orígenes, horizonte)": "15 orígenes 2026-04-13 → 2026-07-20, 4 semanas",
+    "modelo final top / regla cola (candidato §5)": "HGB_redondeo / ingenuo (HGB+ingenuo / ingenuo)",
+    "WAPE top backtesting: final / HGB_poisson / ingenuo / SARIMAX": [
+      0.897,
+      0.899,
+      0.907,
+      1.018
+    ],
+    "WAPE top final por fase (antes / toca evento / después)": [
+      0.469,
+      0.952,
+      0.585
+    ],
+    "WAPE top ingenuo por fase (antes / toca evento / después)": [
+      0.439,
+      0.965,
+      0.6
+    ],
+    "final vs ingenuo: IC 90 % dif. WAPE, P(gana), orígenes ganados": [
+      "[-0.062, +0.045]",
+      0.6,
+      "9/15"
+    ],
+    "skill MASE / RMSSE del final vs ingenuo": [
+      -0.053,
+      -0.061
+    ],
+    "sesgo top backtesting (final)": -0.017,
+    "redondeo de la trayectoria: WAPE top HGB_redondeo / HGB_poisson": [
+      0.897,
+      0.899
+    ],
+    "holdout WAPE top h=1…4: final / ingenuo / SARIMAX": [
+      0.696,
+      0.476,
+      1.18
+    ],
+    "holdout WAPE top h=1…6: final / ingenuo / SARIMAX": [
+      0.652,
+      0.433,
+      1.189
+    ],
+    "holdout sesgo top h=1…6 (final)": 0.191,
+    "holdout WAPE total semanal (final / ingenuo)": [
+      0.11,
+      0.17
+    ],
+    "cobertura 10–90 % holdout: §5.6 / conformal elegida": [
+      "64%",
+      "92%"
+    ],
+    "holdout sin el catálogo de mayor exceso: WAPE top final / ingenuo": [
+      "CUELLO ALTO HONDA REFLECTIVO",
+      0.52,
+      0.418
+    ],
+    "% del sobrepronóstico del top que explica ese catálogo (final)": "111%",
+    "cola (backtesting): % uds de dormidos / nuevos": [
+      "0.3%",
+      "26.6%"
+    ]
+  },
+  "h7": {
+    "corte y horizonte del pronóstico vigente": "2026-09-28 → 5-oct … 23-nov (8 semanas)",
+    "uds próximas 4 semanas: top modelo / top ingenuo / cola": [
+      1444,
+      1372,
+      984
+    ],
+    "uds top últimas 4 semanas reales": 1275,
+    "catálogos del top para revisión manual": [],
+    "catálogo con más unidades pronosticadas (4 semanas)": "CUELLO ALTO MERCEDES",
+    "2 tallas principales y su %": [
+      [
+        "M",
+        "L"
+      ],
+      "58%"
+    ],
+    "3 telas principales y su %": [
+      [
+        "H · N",
+        "D · N",
+        "H · R"
+      ],
+      "98%"
+    ],
+    "P1: catálogos del top / total y % de unidades": [
+      20,
+      792,
+      "77%"
+    ],
+    "P2: uds de evento Colombia y % de su venta en la ventana": [
+      6582,
+      "87%"
+    ],
+    "P3: Colombia tras el Mundial (real / final / ingenuo / media móvil)": [
+      49,
+      75,
+      84,
+      3990
+    ],
+    "figuras del plan / complementarias / póster": [
+      26,
+      11,
+      4
+    ]
+  },
+  "h8": {
+    "modelo guardado": "hgb_final.joblib (n_iter_ = 300, 17,722 filas, corte 2026-09-28)",
+    "reproduce el pronóstico de §7.2.1": "sí (dif. máx. 0)",
+    "uds próximas 4 semanas: top modelo / top ingenuo / cola": [
+      1444,
+      1372,
+      984
+    ],
+    "catálogos para revisión manual": []
+  },
+  "correccion_early_stopping": {
+    "fuente": "reporte 05 §2 (valores 'antes' = reporte 04, ya no vigentes)",
+    "antes": {
+      "wape_top_backtesting": 0.896,
+      "colombia_post": 90,
+      "holdout_wape_top_h4": 0.79,
+      "holdout_wape_top_h6": 0.718,
+      "holdout_sesgo_top_h6": 0.31,
+      "holdout_wape_total_semanal": 0.215,
+      "n_iter_produccion": 10
+    },
+    "ahora": {
+      "wape_top_backtesting": 0.8973127165259897,
+      "colombia_post": 75.25210744590936,
+      "holdout_wape_top_h4": 0.6959471390535561,
+      "holdout_wape_top_h6": 0.6516402801889754,
+      "holdout_sesgo_top_h6": 0.19058548719599588,
+      "holdout_wape_total_semanal": 0.10959931042082068,
+      "n_iter_produccion": 300
+    }
+  },
+  "constantes": {
+    "mundial": [
+      "2026-06-11",
+      "2026-07-19"
+    ],
+    "ventana_evento": [
+      "2026-05-25",
+      "2026-07-13"
+    ],
+    "holdout": [
+      "2026-08-24",
+      "2026-09-28"
+    ],
+    "cortes_backtesting": [
+      "2026-04-13",
+      "2026-04-20",
+      "2026-04-27",
+      "2026-05-04",
+      "2026-05-11",
+      "2026-05-18",
+      "2026-05-25",
+      "2026-06-01",
+      "2026-06-08",
+      "2026-06-15",
+      "2026-06-22",
+      "2026-06-29",
+      "2026-07-06",
+      "2026-07-13",
+      "2026-07-20"
+    ],
+    "horizonte_principal": 4,
+    "horizonte_extendido": 8,
+    "top": [
+      "CUELLO ALTO COLOMBIA RETRO",
+      "CUELLO ALTO COLOMBIA",
+      "CUELLO ALTO COLOMBIA ÉLITE",
+      "CUELLO ALTO HONDA REFLECTIVO",
+      "CUELLO ALTO YAMAHA REFLECTIVO",
+      "CUELLO ALTO RED BULL",
+      "COLOMBIA ELITE/CLASICO",
+      "CUELLO ALTO BMW ESTAMPADO REFLECTIVO",
+      "CUELLO ALTO SUZUKI REFLECTIVO",
+      "CUELLO ALTO MERCEDES",
+      "RED BULL",
+      "CUELLO ALTO PULSAR REFLECTIVO",
+      "CUELLO ALTO AMERICA",
+      "TOYOTA",
+      "CUELLO ALTO KTM REFLECTIVO",
+      "CUELLO ALTO ARGENTINA",
+      "CUELLO ALTO PORTUGAL",
+      "CUELLO ALTO NACIONAL REY DE COPAS",
+      "BUZO COLOMBIA VISITANTE",
+      "FORD"
+    ],
+    "partidos_colombia": [
+      {
+        "fecha": "2026-06-17",
+        "evento": "COL vs UZB (3-1)",
+        "tipo": "partido_colombia"
+      },
+      {
+        "fecha": "2026-06-23",
+        "evento": "COL vs COD (1-0)",
+        "tipo": "partido_colombia"
+      },
+      {
+        "fecha": "2026-06-27",
+        "evento": "COL vs POR (0-0)",
+        "tipo": "partido_colombia"
+      },
+      {
+        "fecha": "2026-07-03",
+        "evento": "COL vs GHA (1-0) 16avos",
+        "tipo": "partido_colombia"
+      },
+      {
+        "fecha": "2026-07-07",
+        "evento": "SUI vs COL (0-0, 4-3 pen) 8vos",
+        "tipo": "partido_colombia"
+      }
+    ],
+    "umbral_revision": 0.5,
+    "umbral_revision_uds": 10,
+    "tope_relativo": 2.0,
+    "meses_es": [
+      "ene",
+      "feb",
+      "mar",
+      "abr",
+      "may",
+      "jun",
+      "jul",
+      "ago",
+      "sep",
+      "oct",
+      "nov",
+      "dic"
+    ]
+  },
+  "paleta": {
+    "okabe_ito": [
+      "#0072B2",
+      "#E69F00",
+      "#009E73",
+      "#D55E00",
+      "#CC79A7",
+      "#56B4E9",
+      "#F0E442",
+      "#000000"
+    ],
+    "color_canal": {
+      "EFFI": "#0072B2",
+      "DROPI": "#E69F00",
+      "TOTAL": "#000000"
+    },
+    "color_familia": {
+      "COLOMBIA": "#D55E00",
+      "RESTO": "#0072B2"
+    },
+    "color_evento": "#F0E442",
+    "estilo_modelo": {
+      "ingenuo": {
+        "color": "#777777",
+        "linea": ":"
+      },
+      "media_movil_4": {
+        "color": "#E69F00",
+        "linea": "--"
+      },
+      "ETS": {
+        "color": "#F0E442",
+        "linea": "--"
+      },
+      "SARIMAX": {
+        "color": "#56B4E9",
+        "linea": "--"
+      },
+      "HGB_poisson": {
+        "color": "#009E73",
+        "linea": "-"
+      },
+      "HGB_redondeo": {
+        "color": "#0072B2",
+        "linea": "-."
+      },
+      "HGB+ingenuo": {
+        "color": "#CC79A7",
+        "linea": "-"
+      }
+    },
+    "color_pronostico": "#0072B2",
+    "color_ingenuo": "#777777"
+  },
+  "metadata_modelo": {
+    "modelo": "HGB_redondeo",
+    "corte": "2026-09-28",
+    "n_iter": 300,
+    "filas_entrenamiento": 17722,
+    "params_hgb": {
+      "loss": "poisson",
+      "learning_rate": 0.05,
+      "max_iter": 300,
+      "max_leaf_nodes": 15,
+      "min_samples_leaf": 20,
+      "l2_regularization": 1.0,
+      "categorical_features": "from_dtype",
+      "random_state": 42,
+      "early_stopping": false
+    },
+    "versiones": {
+      "python": "3.14.7",
+      "pandas": "3.1.1",
+      "numpy": "2.5.4",
+      "matplotlib": "3.11.2",
+      "seaborn": "0.13.2",
+      "statsmodels": "0.15.0",
+      "scikit-learn": "1.9.1",
+      "torch": "2.15.0+cpu",
+      "joblib": "1.6.0"
+    }
+  }
+}

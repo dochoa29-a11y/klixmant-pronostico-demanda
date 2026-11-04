@@ -1,0 +1,201 @@
+{
+  "modelo": "HGB_redondeo",
+  "descripcion": "HistGradientBoostingRegressor (pérdida Poisson) global para los catálogos del top; pronóstico recursivo con la trayectoria redondeada a unidades enteras. La cola se pronostica con el ingenuo (última semana).",
+  "archivo": "hgb_final.joblib",
+  "sha256": "e21ec71eac65b8dc3c3f7d6adbef54bd86745ffaa4860a3f973399177b8e75a6",
+  "fecha_entrenamiento": "2026-11-04T15:42:31",
+  "corte": "2026-09-28",
+  "primera_semana_pronostico": "2026-10-05",
+  "horizonte_principal": 4,
+  "horizonte_extendido": 8,
+  "frecuencia": "W-MON",
+  "filas_entrenamiento": 17722,
+  "catalogos_entrenamiento": 792,
+  "unidades_entrenamiento": 29428.0,
+  "n_iter": 300,
+  "params_hgb": {
+    "loss": "poisson",
+    "learning_rate": 0.05,
+    "max_iter": 300,
+    "max_leaf_nodes": 15,
+    "min_samples_leaf": 20,
+    "l2_regularization": 1.0,
+    "categorical_features": "from_dtype",
+    "random_state": 42,
+    "early_stopping": false
+  },
+  "variables": [
+    "lag_1",
+    "lag_2",
+    "lag_3",
+    "lag_4",
+    "media_4",
+    "media_8",
+    "desv_4",
+    "desv_8",
+    "semanas_desde_ultima_venta",
+    "pct_dropi_8",
+    "n_festivos",
+    "quincena",
+    "fecha_comercial",
+    "prima",
+    "pre_mundial",
+    "semana_mundial",
+    "dias_mundial",
+    "n_partidos_colombia",
+    "colombia_en_torneo",
+    "colombia_x_evento",
+    "es_colombia",
+    "pct_tela_principal",
+    "n_telas",
+    "pct_dama",
+    "reflectivo",
+    "personalizado",
+    "no_rotativo",
+    "planchadas",
+    "puntadas",
+    "tiene_ficha",
+    "semanas_desde_lanzamiento",
+    "es_lanzamiento",
+    "linea",
+    "tipo_prenda",
+    "tela_principal",
+    "tipo_proceso",
+    "cluster"
+  ],
+  "variables_categoricas": [
+    "linea",
+    "tipo_prenda",
+    "tela_principal",
+    "tipo_proceso",
+    "cluster"
+  ],
+  "categorias": {
+    "linea": [
+      "AUTOS_Y_MOTOR",
+      "COLOMBIA",
+      "FUTBOL",
+      "MOTOS",
+      "OTROS",
+      "PERSONALIZADO"
+    ],
+    "tipo_prenda": [
+      "BUZO",
+      "CUELLO_ALTO",
+      "SIN_DATO"
+    ],
+    "tela_principal": [
+      "100",
+      "3",
+      "BANDERA",
+      "BL",
+      "BO",
+      "BTS",
+      "CCC",
+      "CM",
+      "CO90",
+      "JB",
+      "JBMAR",
+      "MAR",
+      "N",
+      "PER",
+      "R",
+      "RF"
+    ],
+    "tipo_proceso": [
+      "AMBOS",
+      "BOR",
+      "ES",
+      "SIN_DATO"
+    ],
+    "cluster": [
+      "base",
+      "cola",
+      "en declive",
+      "evento",
+      "lanzamiento reciente"
+    ]
+  },
+  "pronostico": {
+    "estrategia": "recursiva",
+    "redondear": true,
+    "tope_relativo": 2.0,
+    "semanas_activo": 12,
+    "modelo_cola": "ingenuo",
+    "top": [
+      "CUELLO ALTO COLOMBIA RETRO",
+      "CUELLO ALTO COLOMBIA",
+      "CUELLO ALTO COLOMBIA ÉLITE",
+      "CUELLO ALTO HONDA REFLECTIVO",
+      "CUELLO ALTO YAMAHA REFLECTIVO",
+      "CUELLO ALTO RED BULL",
+      "COLOMBIA ELITE/CLASICO",
+      "CUELLO ALTO BMW ESTAMPADO REFLECTIVO",
+      "CUELLO ALTO SUZUKI REFLECTIVO",
+      "CUELLO ALTO MERCEDES",
+      "RED BULL",
+      "CUELLO ALTO PULSAR REFLECTIVO",
+      "CUELLO ALTO AMERICA",
+      "TOYOTA",
+      "CUELLO ALTO KTM REFLECTIVO",
+      "CUELLO ALTO ARGENTINA",
+      "CUELLO ALTO PORTUGAL",
+      "CUELLO ALTO NACIONAL REY DE COPAS",
+      "BUZO COLOMBIA VISITANTE",
+      "FORD"
+    ]
+  },
+  "intervalo": {
+    "niveles": [
+      0.1,
+      0.9
+    ],
+    "calibracion": "semanas fuera del evento",
+    "z_por_h": {
+      "1": {
+        "z10": -2.64827510425392,
+        "z90": 3.9774387546277237
+      },
+      "2": {
+        "z10": -3.3843481076553696,
+        "z90": 5.1127233444587326
+      },
+      "3": {
+        "z10": -3.8114358675889726,
+        "z90": 5.976551795468306
+      },
+      "4": {
+        "z10": -4.590628938134165,
+        "z90": 7.159306629033225
+      }
+    },
+    "formula": "pred + z · sqrt(pred + 1), recortado en 0; para h > 4 se usa h = 4"
+  },
+  "revision_manual": {
+    "umbral_relativo": 0.5,
+    "umbral_uds": 10,
+    "semanas": 4
+  },
+  "eventos": {
+    "mundial": [
+      "2026-06-11",
+      "2026-07-19"
+    ],
+    "ventana_evento": [
+      "2026-05-25",
+      "2026-07-13"
+    ]
+  },
+  "semilla": 42,
+  "versiones": {
+    "python": "3.14.7",
+    "pandas": "3.1.1",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "seaborn": "0.13.2",
+    "statsmodels": "0.15.0",
+    "scikit-learn": "1.9.1",
+    "torch": "2.15.0+cpu",
+    "joblib": "1.6.0"
+  }
+}

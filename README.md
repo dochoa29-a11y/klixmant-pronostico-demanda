@@ -15,11 +15,12 @@ Trabajo final de **Analítica de Marketing** (UNAB · TEMA, curso 2228). Pronós
 | §5 Modelado | ✅ |
 | §6 Validación (backtesting + holdout) | ✅ |
 | §7 Gráficas | ✅ |
-| §8 Modelo guardado, guía y *model card* | ⏳ (agente 06) |
+| §8 Modelo guardado, guía, *model card* y datos de la app | ✅ |
 | Tablero Streamlit | ⏳ (agentes 07–08) — ver [docs/PLAN_DESPLIEGUE_STREAMLIT.md](docs/PLAN_DESPLIEGUE_STREAMLIT.md) |
 | Póster | ⏳ (después) |
 
 Modelo final: `HGB_redondeo` (HistGradientBoosting Poisson global, scikit-learn), con la cola de catálogos por regla ingenua.
+Para generar un pronóstico nuevo, ver [docs/guia_generar_pronostico.md](docs/guia_generar_pronostico.md); límites del modelo en [docs/model_card.md](docs/model_card.md).
 
 ## Estructura
 
@@ -30,7 +31,8 @@ requirements.txt                     Librerías del notebook
 datos/        Excel original (no se versiona)
 procesado/    Tablas intermedias (prefijo = sección: 3_, 4_, 5_, 6_, 7_)
 figuras/      Gráficas (prefijo = sección) y figuras/poster/
-modelos/      Modelo entrenado (§8)
+modelos/      Modelo entrenado (§8): hgb_final.joblib + metadata.json
+app/data/     Datos precalculados para la app Streamlit (§8.4; ver app/data/ESQUEMA.md)
 docs/         Reportes de traspaso, diccionario de variables, índice de figuras y plan de despliegue
 ```
 
@@ -44,6 +46,7 @@ docs/         Reportes de traspaso, diccionario de variables, índice de figuras
    ```bash
    .venv\Scripts\pip install -r requirements.txt
    ```
+   (opcional, para el LSTM de §5: `pip install torch --index-url https://download.pytorch.org/whl/cpu`)
 3. Abrir el notebook y ejecutar *Run all* (~17 min; con `RECALCULAR_BACKTESTING = False` baja varios minutos).
    En Colab: agregar la carpeta compartida de Drive como acceso directo en "Mi unidad" (ver reporte 01).
 
@@ -56,6 +59,10 @@ docs/         Reportes de traspaso, diccionario de variables, índice de figuras
 | `REPORTE_AGENTE_03_seccion_5.md` | Escalera de modelos y candidato |
 | `REPORTE_AGENTE_04_seccion_6.md` | Backtesting, holdout e intervalos (cifras del holdout superadas por el reporte 05) |
 | `REPORTE_AGENTE_05_seccion_7.md` | Gráficas, pronóstico vigente y corrección de `early_stopping` |
+| `REPORTE_AGENTE_06_seccion_8.md` | Modelo guardado, pronóstico oficial, documentación y bundle de la app |
 | `PLAN_DESPLIEGUE_STREAMLIT.md` | Plan para §8, la app Streamlit y su publicación |
+| `guia_generar_pronostico.md` | Cómo generar un pronóstico nuevo (para Klixmant) |
+| `model_card.md` | Uso previsto, métricas, limitaciones y cuándo reentrenar |
+| `registro_decisiones.md` | Decisión · alternativas · por qué (§2–§8) |
 | `4_diccionario_variables.csv` | Diccionario de variables del panel |
 | `7_indice_figuras.csv` | Índice de figuras por fase |

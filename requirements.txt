@@ -6,6 +6,8 @@ seaborn>=0.13
 statsmodels>=0.14
 openpyxl>=3.1
 scikit-learn>=1.5
+joblib  # guardar / cargar el modelo (§8); viene con scikit-learn
+pyarrow  # parquet del bundle de la app (§8.4)
 torch  # LSTM de §5 (opcional: sin torch el notebook omite el LSTM). Local CPU: pip install torch --index-url https://download.pytorch.org/whl/cpu
 jupyter
 gdown  # solo Colab, si la carpeta de Drive no está como acceso directo
