@@ -4,6 +4,16 @@
 > Formato basado en Mitchell, M. et al. (2019), *Model cards for model reporting*, FAT\* '19, 220–229. https://doi.org/10.1145/3287560.3287596
 > **Cifras posteriores a la corrección de `early_stopping`** (reporte 05 §2). Las tablas 3.1–3.2 del reporte 04 ya no están vigentes.
 
+> **Actualización del 9-nov-2026 — el Mundial como dato atípico.** Después de la mentoría con Klixmant, el modelo final pasó de
+> `HGB_redondeo` a **`HGB_sin_atipico`**: mismas variables y parámetros, pero una vez termina el evento sus 8 semanas (25-may → 13-jul)
+> **no entran al entrenamiento** y los rezagos se calculan **sin el pico** (13.233 filas de entrenamiento en vez de 17.722).
+> Cifras de la corrida del 9-nov (top 20): holdout WAPE h = 1…4 **0,469** (antes 0,696; ingenuo 0,476); h = 1…6 **0,391** (antes 0,652; ingenuo 0,433),
+> sesgo **+5 %** (antes +19 %); total semanal **0,099** (ingenuo 0,170). Backtesting: WAPE 0,907 (igual al ingenuo); en los 2 orígenes
+> pegados al fin del evento es **peor** (0,762 vs 0,585 del modelo anterior; Colombia 324 uds pronosticadas vs 49 reales), porque no vio el Mundial.
+> **Dos advertencias:** es una decisión de negocio tomada con el holdout ya abierto (sus cifras son indicativas, no una prueba limpia), y el
+> intervalo quedó conservador (cobertura 95 % frente al 80 % nominal). Las tablas de abajo que nombran `HGB_redondeo` describen el modelo anterior.
+> Comparación con el modelo inicial del curso a nivel SKU: notebook §6.11.
+
 ---
 
 ## 1. Detalles del modelo

@@ -7,12 +7,14 @@ from utils import textos as T
 from utils.datos import constantes, kpi, tabla
 
 k = kpi()
+final = k["modelo_final"]
 col = k["colombia_post_mundial"]
 
 E.encabezado(
     "Pronóstico de demanda · Klixmant S.A.S.",
-    f"Tras el Mundial, el modelo pronosticó <b>{E.num(col['HGB_redondeo'])} uds</b> de Colombia "
-    f"(se vendieron {E.num(col['real'])}); una media móvil habría pedido <b>{E.num(col['media_movil_4'])}</b>."
+    f"Tratando el Mundial como <b>dato atípico</b>, el error del top en las últimas semanas queda en <b>{E.dec(k['holdout_wape_top_h4'][final])}</b> "
+    f"(antes {E.dec(k['holdout_wape_top_h4']['HGB_redondeo'])}; ingenuo {E.dec(k['holdout_wape_top_h4']['ingenuo'])}). "
+    f"Justo al terminar el Mundial todavía pide de más en Colombia: {E.num(col[final])} uds frente a {E.num(col['real'])} vendidas."
 )
 
 E.kpis([
@@ -31,8 +33,8 @@ st.write("")
 izq, der = st.columns([3, 2], gap="large")
 
 with izq:
-    st.subheader("El titular: quién «arrastra» el Mundial")
-    orden = ["real", "HGB_redondeo", "ingenuo", "ETS", "SARIMAX", "media_movil_4"]
+    st.subheader("Justo después del Mundial: quién lo «arrastra»")
+    orden = ["real", final, "ingenuo", "ETS", "SARIMAX", "media_movil_4"]
     etiquetas = ["Venta real"] + [E.nombre_modelo(m) for m in orden[1:]]
     colores = [E.COLOR_REAL] + [E.estilo_modelo(m)["color"] for m in orden[1:]]
     valores = [col[m] for m in orden]
@@ -90,7 +92,9 @@ with c3:
     st.markdown("#### Lo honesto")
     bt = k["wape_top_backtesting"]
     st.markdown(
-        f"- Por catálogo, el modelo **no le gana con claridad al ingenuo** (WAPE {E.dec(bt['HGB_redondeo'])} vs {E.dec(bt['ingenuo'])}).\n"
-        "- Su valor: **no arrastra el Mundial** y acierta mejor el **total semanal** "
-        f"({E.dec(k['holdout_wape_total_semanal']['HGB_redondeo'])} vs {E.dec(k['holdout_wape_total_semanal']['ingenuo'])})."
+        f"- En el backtesting, por catálogo, el modelo **no le gana con claridad al ingenuo** (WAPE {E.dec(bt[final])} vs {E.dec(bt['ingenuo'])}): "
+        "la mayoría de esos ensayos tocan el Mundial, que es un dato atípico.\n"
+        f"- En las últimas semanas (holdout) queda en **{E.dec(k['holdout_wape_top_h4'][final])}** frente a {E.dec(k['holdout_wape_top_h4']['ingenuo'])} del ingenuo, "
+        f"y en el **total semanal** en {E.dec(k['holdout_wape_total_semanal'][final])} vs {E.dec(k['holdout_wape_total_semanal']['ingenuo'])}.\n"
+        "- El holdout ya estaba abierto cuando se decidió tratar el Mundial como atípico: esas cifras son indicativas."
     )

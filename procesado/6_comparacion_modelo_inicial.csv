@@ -1,0 +1,19 @@
+panel,paso,modelo,MAE,RMSE,MAPE_con_venta,WAPE,sesgo
+A · SKU del modelo inicial,0 · referencia,Media de las 4 semanas anteriores,0.36944177863083816,1.0814784923273337,0.7346851511622303,0.8371692642261689,-0.004621239579557811
+A · SKU del modelo inicial,0 · modelo inicial,LinearSVR (mejor del modelo inicial),0.3681663852275543,1.101846589444968,0.797714529297056,0.8342791737740737,-0.08839609326735548
+A · SKU del modelo inicial,1 · mismos 12 rezagos,"HGB Poisson, entrenado CON el Mundial",0.4546377139100418,1.260695701264857,0.8125960871461337,1.030226526772592,0.20189820632102526
+A · SKU del modelo inicial,2 · Mundial como atípico,"HGB Poisson, entrenado SIN las semanas del Mundial",0.42312346532481027,1.117762260477699,0.7113098371886232,0.958814028709936,-0.031017762915350928
+A · SKU del modelo inicial,3 · + lectura del SKU,HGB sin Mundial + atributos del SKU,0.4052601038971905,1.0678236070279143,0.6812923900796234,0.9183349654096539,-0.0427953534379293
+A · SKU del modelo inicial,4 · + rezagos sin el pico,HGB sin Mundial + atributos + rezagos topados,0.40039359566234267,1.0450514637176609,0.6715966844650385,0.9073072707796181,-0.01575100285190663
+B · SKU sin la semana parcial,0 · referencia,Media de las 4 semanas anteriores,0.3493682021753039,0.9565235073376772,0.6765076345854006,0.741177468612148,-0.09289107567017306
+B · SKU sin la semana parcial,0 · modelo inicial,LinearSVR (mejor del modelo inicial),0.35510245255368744,1.0170775226637294,0.7365272791018164,0.7533425630694448,-0.17614780862557236
+B · SKU sin la semana parcial,1 · mismos 12 rezagos,"HGB Poisson, entrenado CON el Mundial",0.46124836550842585,1.2707684925500768,0.7780153211607242,0.9785289382961244,0.17482974134783205
+B · SKU sin la semana parcial,2 · Mundial como atípico,"HGB Poisson, entrenado SIN las semanas del Mundial",0.4206085985728031,1.0959271135289566,0.6816422836857343,0.8923125070502764,-0.06179427764566006
+B · SKU sin la semana parcial,3 · + lectura del SKU,HGB sin Mundial + atributos del SKU,0.39856925571527874,0.997880897483682,0.6444797291212088,0.8455564936314633,-0.09393460746918773
+B · SKU sin la semana parcial,4 · + rezagos sin el pico,HGB sin Mundial + atributos + rezagos topados,0.39205305434559645,0.9775045392301719,0.632269232716574,0.8317325061990732,-0.06800506615114117
+"C · prenda (referencia + talla), 2 canales",0 · referencia,Media de las 4 semanas anteriores,0.40639467592592593,1.379516991424763,0.6367676229749956,0.48148782996229,-0.09033253342475146
+"C · prenda (referencia + talla), 2 canales",0 · modelo inicial,LinearSVR (mejor del modelo inicial),0.48586247470238647,1.4076343117751857,0.6483991396981773,0.575639599784521,0.019677164266113246
+"C · prenda (referencia + talla), 2 canales",1 · mismos 12 rezagos,"HGB Poisson, entrenado CON el Mundial",0.5149737762235855,1.6087226081162356,0.7055936096562702,0.6101300550664078,0.14973382186586992
+"C · prenda (referencia + talla), 2 canales",2 · Mundial como atípico,"HGB Poisson, entrenado SIN las semanas del Mundial",0.4834957643168738,1.6001937507890378,0.5926890226844412,0.572835571298977,-0.12949379742870704
+"C · prenda (referencia + talla), 2 canales",3 · + lectura del SKU,HGB sin Mundial + atributos del SKU,0.48098817320720144,1.6162826852323893,0.5808019848655698,0.5698646303065095,-0.13003226969465143
+"C · prenda (referencia + talla), 2 canales",4 · + rezagos sin el pico,HGB sin Mundial + atributos + rezagos topados,0.4749801860189208,1.5639972981223154,0.5907416660997418,0.5627464939600241,-0.10191612350139874

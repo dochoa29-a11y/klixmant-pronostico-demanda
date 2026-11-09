@@ -1,17 +1,18 @@
 {
-  "modelo": "HGB_redondeo",
-  "descripcion": "HistGradientBoostingRegressor (pérdida Poisson) global para los catálogos del top; pronóstico recursivo con la trayectoria redondeada a unidades enteras. La cola se pronostica con el ingenuo (última semana).",
+  "modelo": "HGB_sin_atipico",
+  "descripcion": "HistGradientBoostingRegressor (pérdida Poisson) global para los catálogos del top; pronóstico recursivo con la trayectoria redondeada a unidades enteras. La cola se pronostica con el ingenuo (última semana). El Mundial se trata como atípico: sus semanas no entran al entrenamiento y los rezagos se calculan sin el pico.",
+  "mundial_como_atipico": true,
   "archivo": "hgb_final.joblib",
-  "sha256": "e21ec71eac65b8dc3c3f7d6adbef54bd86745ffaa4860a3f973399177b8e75a6",
-  "fecha_entrenamiento": "2026-11-04T15:42:31",
+  "sha256": "76deebff6a8d49dad0af9b1b3c893ba796ef544e9b62d64f492591211733e703",
+  "fecha_entrenamiento": "2026-11-09T17:01:40",
   "corte": "2026-09-28",
   "primera_semana_pronostico": "2026-10-05",
   "horizonte_principal": 4,
   "horizonte_extendido": 8,
   "frecuencia": "W-MON",
-  "filas_entrenamiento": 17722,
+  "filas_entrenamiento": 13233,
   "catalogos_entrenamiento": 792,
-  "unidades_entrenamiento": 29428.0,
+  "unidades_entrenamiento": 19131.0,
   "n_iter": 300,
   "params_hgb": {
     "loss": "poisson",
@@ -153,20 +154,20 @@
     "calibracion": "semanas fuera del evento",
     "z_por_h": {
       "1": {
-        "z10": -2.64827510425392,
-        "z90": 3.9774387546277237
+        "z10": -2.4077115757799197,
+        "z90": 4.9801982597337044
       },
       "2": {
-        "z10": -3.3843481076553696,
-        "z90": 5.1127233444587326
+        "z10": -2.889756431661299,
+        "z90": 5.933898730556329
       },
       "3": {
-        "z10": -3.8114358675889726,
-        "z90": 5.976551795468306
+        "z10": -3.507303258655086,
+        "z90": 8.004669428472956
       },
       "4": {
-        "z10": -4.590628938134165,
-        "z90": 7.159306629033225
+        "z10": -4.781354566996182,
+        "z90": 10.778255208427934
       }
     },
     "formula": "pred + z · sqrt(pred + 1), recortado en 0; para h > 4 se usa h = 4"

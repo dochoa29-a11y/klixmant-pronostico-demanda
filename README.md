@@ -15,13 +15,13 @@ Trabajo final de **Analítica de Marketing** (UNAB · TEMA, curso 2228). Pronós
 | §0–§3 Negocio, cuadre y EDA | ✅ |
 | §4 Preparación y variables | ✅ |
 | §5 Modelado | ✅ |
-| §6 Validación (backtesting + holdout) | ✅ |
+| §6 Validación (backtesting + holdout) + §6.11 comparación con el modelo inicial (SKU) | ✅ (actualizado 9-nov) |
 | §7 Gráficas | ✅ |
 | §8 Modelo guardado, guía, *model card* y datos de la app | ✅ |
 | Tablero Streamlit | ✅ Publicado en <https://klixmant-pronostico.streamlit.app/> (app: agente 07 — [reporte](docs/REPORTE_AGENTE_07_app.md); QA y despliegue: agente 08 — [reporte](docs/REPORTE_AGENTE_08_despliegue.md)) |
 | Póster | ⏳ (después) |
 
-Modelo final: `HGB_redondeo` (HistGradientBoosting Poisson global, scikit-learn), con la cola de catálogos por regla ingenua.
+Modelo final: `HGB_sin_atipico` (HistGradientBoosting Poisson global, scikit-learn; el Mundial se trata como **dato atípico**: sus semanas no entran al entrenamiento y los rezagos se calculan sin el pico), con la cola de catálogos por regla ingenua. §6.11 del notebook compara con el modelo inicial del curso a nivel SKU (MAPE en filas con venta: 79,8 % → 67,2 %).
 Para generar un pronóstico nuevo, ver [docs/guia_generar_pronostico.md](docs/guia_generar_pronostico.md); límites del modelo en [docs/model_card.md](docs/model_card.md).
 
 ## Estructura

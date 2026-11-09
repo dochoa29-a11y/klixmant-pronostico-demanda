@@ -1,5 +1,5 @@
 {
-  "generado": "2026-11-04T15:42:42",
+  "generado": "2026-11-09T17:01:49",
   "nota": "Cifras posteriores a la corrección de early_stopping (reporte 05 §2). Ningún número de la app se escribe a mano.",
   "kpi": {
     "unidades_totales": 29919,
@@ -21,19 +21,20 @@
     "uds_evento_resto_neto": -280.0,
     "colombia_post_mundial": {
       "real": 49.0,
-      "HGB_redondeo": 75.25210744590936,
+      "HGB_sin_atipico": 324.4943726444078,
       "ingenuo": 84.0,
       "ETS": 312.9038016551335,
       "SARIMAX": 1871.3448079424581,
       "media_movil_4": 3990.0
     },
-    "modelo_final": "HGB_redondeo",
+    "modelo_final": "HGB_sin_atipico",
     "modelo_cola": "ingenuo",
     "ingenuo_empata": true,
     "wape_top_backtesting": {
       "HGB+ingenuo": 0.8796933551408229,
       "HGB_redondeo": 0.8973127165259897,
       "HGB_poisson": 0.8991199214768238,
+      "HGB_sin_atipico": 0.9065464421371514,
       "ingenuo": 0.907063989427463,
       "ETS": 0.9336870559270872,
       "SARIMAX": 1.0177714082421763,
@@ -43,12 +44,14 @@
       "HGB+ingenuo": 0.5760693797531048,
       "HGB_redondeo": 0.5845550987372313,
       "HGB_poisson": 0.5914242169310802,
+      "HGB_sin_atipico": 0.7622380369333118,
       "ingenuo": 0.5996718621821165,
       "ETS": 0.7095159160638557,
       "SARIMAX": 1.265626770910693,
       "media_movil_4": 2.1843724364232977
     },
     "holdout_wape_top_h4": {
+      "HGB_sin_atipico": 0.46926761649157955,
       "ETS": 0.47049430958498045,
       "ingenuo": 0.47586206896551725,
       "media_movil_4": 0.49181034482758623,
@@ -58,6 +61,7 @@
       "SARIMAX": 1.1799667352616998
     },
     "holdout_wape_top_h6": {
+      "HGB_sin_atipico": 0.3905304974091317,
       "ETS": 0.42674045452120696,
       "ingenuo": 0.43263964950711936,
       "media_movil_4": 0.4531763417305586,
@@ -67,6 +71,7 @@
       "SARIMAX": 1.1889534746101695
     },
     "holdout_sesgo_top_h6": {
+      "HGB_sin_atipico": 0.054211607097069354,
       "ETS": -0.07409161057065725,
       "ingenuo": -0.050383351588170866,
       "media_movil_4": -0.03313253012048193,
@@ -76,6 +81,7 @@
       "SARIMAX": 0.641876768568769
     },
     "holdout_wape_total_semanal": {
+      "HGB_sin_atipico": 0.09920588120969981,
       "ETS": 0.16595717985396183,
       "ingenuo": 0.17038052793966404,
       "media_movil_4": 0.15741058164781166,
@@ -84,12 +90,17 @@
       "HGB_poisson": 0.20320948201937103,
       "SARIMAX": 0.3911782582813068
     },
-    "cobertura_intervalo_holdout": 0.925,
-    "pronostico_4s_top": 1443.8237721953155,
+    "cobertura_intervalo_holdout": 0.95,
+    "pronostico_4s_top": 1716.854389594263,
     "pronostico_4s_top_ingenuo": 1372.0,
     "pronostico_4s_cola": 984.0,
     "real_ultimas_4s_top": 1275.0,
-    "catalogos_revisar": []
+    "catalogos_revisar": [
+      "CUELLO ALTO BMW ESTAMPADO REFLECTIVO",
+      "CUELLO ALTO NACIONAL REY DE COPAS",
+      "CUELLO ALTO RED BULL",
+      "FORD"
+    ]
   },
   "h3": {
     "unidades de demanda (sin canceladas)": 29549,
@@ -186,9 +197,32 @@
   },
   "h6": {
     "backtesting (orígenes, horizonte)": "15 orígenes 2026-04-13 → 2026-07-20, 4 semanas",
-    "modelo final top / regla cola (candidato §5)": "HGB_redondeo / ingenuo (HGB+ingenuo / ingenuo)",
+    "modelo final top / regla cola (candidato §5)": "HGB_sin_atipico / ingenuo (HGB+ingenuo / ingenuo)",
+    "modelo que elegía la regla sola / modelo final (Mundial como atípico)": [
+      "HGB_redondeo",
+      "HGB_sin_atipico"
+    ],
+    "WAPE top después del Mundial (backtesting): regla / final / ingenuo": [
+      0.585,
+      0.762,
+      0.6
+    ],
+    "holdout WAPE top h=1…4: regla / final / ingenuo": [
+      0.696,
+      0.469,
+      0.476
+    ],
+    "holdout WAPE top h=1…6: regla / final / ingenuo": [
+      0.652,
+      0.391,
+      0.433
+    ],
+    "holdout sesgo top h=1…6: regla / final": [
+      0.191,
+      0.054
+    ],
     "WAPE top backtesting: final / HGB_poisson / ingenuo / SARIMAX": [
-      0.897,
+      0.907,
       0.899,
       0.907,
       1.018
@@ -196,7 +230,7 @@
     "WAPE top final por fase (antes / toca evento / después)": [
       0.469,
       0.952,
-      0.585
+      0.762
     ],
     "WAPE top ingenuo por fase (antes / toca evento / después)": [
       0.439,
@@ -204,58 +238,97 @@
       0.6
     ],
     "final vs ingenuo: IC 90 % dif. WAPE, P(gana), orígenes ganados": [
-      "[-0.062, +0.045]",
-      0.6,
-      "9/15"
+      "[-0.054, +0.056]",
+      0.49,
+      "8/15"
     ],
     "skill MASE / RMSSE del final vs ingenuo": [
-      -0.053,
-      -0.061
+      -0.066,
+      -0.072
     ],
-    "sesgo top backtesting (final)": -0.017,
+    "sesgo top backtesting (final)": -0.035,
     "redondeo de la trayectoria: WAPE top HGB_redondeo / HGB_poisson": [
       0.897,
       0.899
     ],
     "holdout WAPE top h=1…4: final / ingenuo / SARIMAX": [
-      0.696,
+      0.469,
       0.476,
       1.18
     ],
     "holdout WAPE top h=1…6: final / ingenuo / SARIMAX": [
-      0.652,
+      0.391,
       0.433,
       1.189
     ],
-    "holdout sesgo top h=1…6 (final)": 0.191,
+    "holdout sesgo top h=1…6 (final)": 0.054,
     "holdout WAPE total semanal (final / ingenuo)": [
-      0.11,
+      0.099,
       0.17
     ],
     "cobertura 10–90 % holdout: §5.6 / conformal elegida": [
       "64%",
-      "92%"
+      "95%"
     ],
     "holdout sin el catálogo de mayor exceso: WAPE top final / ingenuo": [
-      "CUELLO ALTO HONDA REFLECTIVO",
-      0.52,
-      0.418
+      "CUELLO ALTO MERCEDES",
+      0.384,
+      0.446
     ],
-    "% del sobrepronóstico del top que explica ese catálogo (final)": "111%",
+    "% del sobrepronóstico del top que explica ese catálogo (final)": "82%",
     "cola (backtesting): % uds de dormidos / nuevos": [
       "0.3%",
       "26.6%"
     ]
   },
+  "h611": {
+    "mejor del modelo inicial (LinearSVR): MAE / RMSE / MAPE con venta": [
+      0.368,
+      1.102,
+      0.798
+    ],
+    "mismos datos, HGB con el Mundial → sin el Mundial (MAPE con venta)": [
+      0.813,
+      0.711
+    ],
+    "sesgo con el Mundial → sin el Mundial": [
+      0.202,
+      -0.031
+    ],
+    "+ atributos del SKU / + rezagos topados (MAPE con venta)": [
+      0.681,
+      0.672
+    ],
+    "modelo propuesto en el panel del modelo inicial: MAE / RMSE / MAPE con venta": [
+      0.4,
+      1.045,
+      0.672
+    ],
+    "modelo propuesto sin la semana parcial (MAPE con venta)": 0.632,
+    "modelo propuesto por prenda (MAPE con venta / WAPE)": [
+      0.591,
+      0.563
+    ],
+    "media de 4 semanas en los tres paneles (MAPE con venta)": [
+      0.735,
+      0.677,
+      0.637
+    ]
+  },
   "h7": {
     "corte y horizonte del pronóstico vigente": "2026-09-28 → 5-oct … 23-nov (8 semanas)",
     "uds próximas 4 semanas: top modelo / top ingenuo / cola": [
-      1444,
+      1717,
       1372,
       984
     ],
     "uds top últimas 4 semanas reales": 1275,
-    "catálogos del top para revisión manual": [],
+    "catálogos del top para revisión manual": [
+      "CUELLO ALTO BMW ESTAMPADO REFLECTIVO",
+      "CUELLO ALTO NACIONAL REY DE COPAS",
+      "CUELLO ALTO RED BULL",
+      "FORD"
+    ],
     "catálogo con más unidades pronosticadas (4 semanas)": "CUELLO ALTO MERCEDES",
     "2 tallas principales y su %": [
       [
@@ -283,25 +356,47 @@
     ],
     "P3: Colombia tras el Mundial (real / final / ingenuo / media móvil)": [
       49,
-      75,
+      324,
       84,
       3990
     ],
     "figuras del plan / complementarias / póster": [
       26,
-      11,
+      12,
       4
     ]
   },
   "h8": {
-    "modelo guardado": "hgb_final.joblib (n_iter_ = 300, 17,722 filas, corte 2026-09-28)",
+    "modelo guardado": "hgb_final.joblib (n_iter_ = 300, 13,233 filas, corte 2026-09-28)",
     "reproduce el pronóstico de §7.2.1": "sí (dif. máx. 0)",
     "uds próximas 4 semanas: top modelo / top ingenuo / cola": [
-      1444,
+      1717,
       1372,
       984
     ],
-    "catálogos para revisión manual": []
+    "catálogos para revisión manual": [
+      "CUELLO ALTO BMW ESTAMPADO REFLECTIVO",
+      "CUELLO ALTO NACIONAL REY DE COPAS",
+      "CUELLO ALTO RED BULL",
+      "FORD"
+    ]
+  },
+  "mundial_como_atipico": {
+    "modelo_regla": "HGB_redondeo",
+    "modelo_final": "HGB_sin_atipico",
+    "aplica": true,
+    "modelo_inicial_curso": {
+      "LinearSVR": {
+        "MAE": 0.368,
+        "RMSE": 1.102,
+        "MAPE_con_venta": 0.7977
+      },
+      "CatBoost": {
+        "MAE": 0.476,
+        "RMSE": 1.283,
+        "MAPE_con_venta": 0.8355
+      }
+    }
   },
   "correccion_early_stopping": {
     "fuente": "reporte 05 §2 (valores 'antes' = reporte 04, ya no vigentes)",
@@ -315,12 +410,12 @@
       "n_iter_produccion": 10
     },
     "ahora": {
-      "wape_top_backtesting": 0.8973127165259897,
-      "colombia_post": 75.25210744590936,
-      "holdout_wape_top_h4": 0.6959471390535561,
-      "holdout_wape_top_h6": 0.6516402801889754,
-      "holdout_sesgo_top_h6": 0.19058548719599588,
-      "holdout_wape_total_semanal": 0.10959931042082068,
+      "wape_top_backtesting": 0.9065464421371514,
+      "colombia_post": 324.4943726444078,
+      "holdout_wape_top_h4": 0.46926761649157955,
+      "holdout_wape_top_h6": 0.3905304974091317,
+      "holdout_sesgo_top_h6": 0.054211607097069354,
+      "holdout_wape_total_semanal": 0.09920588120969981,
       "n_iter_produccion": 300
     }
   },
@@ -472,16 +567,20 @@
       "HGB+ingenuo": {
         "color": "#CC79A7",
         "linea": "-"
+      },
+      "HGB_sin_atipico": {
+        "color": "#D55E00",
+        "linea": "-"
       }
     },
-    "color_pronostico": "#0072B2",
+    "color_pronostico": "#D55E00",
     "color_ingenuo": "#777777"
   },
   "metadata_modelo": {
-    "modelo": "HGB_redondeo",
+    "modelo": "HGB_sin_atipico",
     "corte": "2026-09-28",
     "n_iter": 300,
-    "filas_entrenamiento": 17722,
+    "filas_entrenamiento": 13233,
     "params_hgb": {
       "loss": "poisson",
       "learning_rate": 0.05,

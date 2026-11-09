@@ -16,16 +16,36 @@ final = k["modelo_final"]
 bt = tabla("metricas_backtesting")
 bt_i = bt.set_index("modelo")
 ho = tabla("metricas_holdout").set_index("modelo")
-ORDEN_BT = ["ingenuo", "media_movil_4", "ETS", "SARIMAX", "HGB_poisson", "HGB_redondeo", "HGB+ingenuo"]
+ORDEN_BT = ["ingenuo", "media_movil_4", "ETS", "SARIMAX", "HGB_poisson", "HGB_redondeo", "HGB+ingenuo", "HGB_sin_atipico"]
 
 wf, wi = k["wape_top_backtesting"][final], k["wape_top_backtesting"]["ingenuo"]
 col = k["colombia_post_mundial"]
 
 E.encabezado(
     "Modelos y validación",
-    f"El modelo <b>no arrastra el Mundial</b> (Colombia después del evento: {E.num(col[final])} uds vs {E.num(col['real'])} reales), "
-    f"pero por catálogo <b>empata con el ingenuo</b> (WAPE {E.dec(wf)} vs {E.dec(wi)})."
+    f"El Mundial se trata como <b>dato atípico</b>: en las últimas semanas el modelo queda en WAPE <b>{E.dec(k['holdout_wape_top_h4'][final])}</b> frente a {E.dec(k['holdout_wape_top_h4']['ingenuo'])} del ingenuo. "
+    f"En el backtesting completo empatan ({E.dec(wf)} vs {E.dec(wi)}) porque casi todos los orígenes tocan el Mundial; "
+    f"justo al terminar el evento aún pide de más en Colombia ({E.num(col[final])} uds vs {E.num(col['real'])} reales)."
 )
+ma = cf["mundial_como_atipico"]
+with st.expander("El Mundial como dato atípico (cambio del 9-nov, después de la mentoría con Klixmant)", expanded=True):
+    st.markdown(
+        "Klixmant pidió **no proyectar con el pico de junio–julio**: el Mundial es cada cuatro años. El modelo final es el mismo boosting, "
+        "pero cuando el evento ya terminó **sus semanas no entran al entrenamiento** y los rezagos se calculan **sin el pico**.")
+    reg = ma["modelo_regla"]
+    E.tabla_st(pd.DataFrame([
+        {"Prueba": "Holdout · WAPE top h=1…4", E.nombre_modelo(reg): E.dec(k["holdout_wape_top_h4"][reg]), E.nombre_modelo(final): E.dec(k["holdout_wape_top_h4"][final]),
+         "Ingenuo": E.dec(k["holdout_wape_top_h4"]["ingenuo"])},
+        {"Prueba": "Holdout · WAPE top h=1…6", E.nombre_modelo(reg): E.dec(k["holdout_wape_top_h6"][reg]), E.nombre_modelo(final): E.dec(k["holdout_wape_top_h6"][final]),
+         "Ingenuo": E.dec(k["holdout_wape_top_h6"]["ingenuo"])},
+        {"Prueba": "Holdout · sesgo top h=1…6", E.nombre_modelo(reg): E.pct(k["holdout_sesgo_top_h6"][reg], signo=True),
+         E.nombre_modelo(final): E.pct(k["holdout_sesgo_top_h6"][final], signo=True), "Ingenuo": E.pct(k["holdout_sesgo_top_h6"]["ingenuo"], signo=True)},
+        {"Prueba": "Backtesting · WAPE top justo después del Mundial", E.nombre_modelo(reg): E.dec(k["wape_top_post_backtesting"][reg]),
+         E.nombre_modelo(final): E.dec(k["wape_top_post_backtesting"][final]), "Ingenuo": E.dec(k["wape_top_post_backtesting"]["ingenuo"])},
+    ]))
+    st.caption("Dos advertencias. (1) Es una decisión de negocio tomada cuando el holdout ya estaba abierto: sus cifras son indicativas, no una prueba limpia. "
+               "(2) En los dos orígenes pegados al fin del evento el modelo sin atípico es peor: no vio el Mundial y tarda unas semanas en notar "
+               "que los catálogos de Colombia dejaron de venderse. Para el pronóstico vigente (octubre) eso ya no aplica.")
 tot = k["holdout_wape_total_semanal"]
 E.kpis([
     ("WAPE top · backtesting", E.dec(wf), f"{E.dec(wf - wi, signo=True)} vs ingenuo", f"{len(c['cortes_backtesting'])} orígenes, {c['horizonte_principal']} semanas. Menor es mejor.", "inverse"),
@@ -35,7 +55,7 @@ E.kpis([
      "WAPE del total de unidades por semana en el holdout: lo que importa para planear la planta.", "inverse"),
     ("Top h=1…4 · holdout", E.dec(k["holdout_wape_top_h4"][final]),
      f"{E.dec(k['holdout_wape_top_h4'][final] - k['holdout_wape_top_h4']['ingenuo'], signo=True)} vs ingenuo",
-     "Aquí el ingenuo gana: un catálogo (Honda) explica casi todo el exceso.", "inverse"),
+     "WAPE por catálogo del top en las primeras 4 semanas del holdout.", "inverse"),
     ("Cobertura del intervalo", E.pct(k["cobertura_intervalo_holdout"]), None, "Meta: 80 %. Intervalo 10–90 % conformal."),
 ])
 
@@ -51,8 +71,8 @@ with st.expander("Corrección de `early_stopping` (por qué estas cifras difiere
     E.tabla_st(pd.DataFrame([{"Métrica": n, "Antes (no vigente)": f(ce["antes"][key]), "Ahora": f(ce["ahora"][key])} for n, key, f in filas]))
 
 st.write("")
-tabs = st.tabs(["Escalera", "Backtesting", "Por origen", "Por horizonte", "Holdout", "Caso Honda",
-                "Intervalos", "Variables", "Segmentos"],
+tabs = st.tabs(["Escalera", "Backtesting", "Por origen", "Por horizonte", "Holdout", "Catálogo con más exceso",
+                "Intervalos", "Variables", "Segmentos", "Vs. modelo inicial (SKU)"],
                key="p5_tabs", on_change="rerun")
 
 with tabs[0]:
@@ -114,7 +134,7 @@ with tabs[1]:
 with tabs[2]:
     if tabs[2].open:  # pestaña perezosa: solo se dibuja la abierta
         o = tabla("wape_por_origen_backtesting").sort_values("corte")
-        mods = [m for m in ["ingenuo", "media_movil_4", "ETS", "SARIMAX", "HGB_poisson", "HGB_redondeo", "HGB_ingenuo"] if m in o.columns]
+        mods = [m for m in ["ingenuo", "media_movil_4", "ETS", "SARIMAX", "HGB_poisson", "HGB_redondeo", "HGB_ingenuo", "HGB_sin_atipico"] if m in o.columns]
         z = o[mods].T.values
         fig = go.Figure(go.Heatmap(z=z, x=E.fechas(o["corte"]), y=[E.nombre_modelo(m) for m in mods], colorscale=E.ESCALA_VINO,
                                    zmin=0, zmax=min(2.5, float(np.nanmax(z))), text=[[E.dec(v, 2) for v in fila] for fila in z],
@@ -290,3 +310,45 @@ with tabs[8]:
         E.como_leer("Barras agrupadas: cada color es un modelo. Compare dentro de cada grupo; la cola tiene WAPE alto por catálogo "
                     "porque vende a saltos, pero sumada se pronostica bien.")
 
+
+with tabs[9]:
+    if tabs[9].open:  # pestaña perezosa: solo se dibuja la abierta
+        cs = tabla("comparacion_modelo_inicial")
+        ini = cf["mundial_como_atipico"]["modelo_inicial_curso"]["LinearSVR"]
+        paneles = list(dict.fromkeys(cs["panel"]))
+        pasos = list(dict.fromkeys(cs["paso"]))
+        a = cs[cs["panel"] == paneles[0]].set_index("paso")
+        fin = pasos[-1]
+        E.kpis([
+            ("Mejor del modelo inicial", E.pct(ini["MAPE_con_venta"], 1), None, "LinearSVR del notebook del curso: MAPE en las filas con venta, por SKU."),
+            ("Mismo modelo de boosting, con el Mundial", E.pct(a.loc["1 · mismos 12 rezagos", "MAPE_con_venta"], 1), None,
+             "Mismos 12 rezagos y misma partición, entrenando con las semanas del Mundial."),
+            ("Sin las semanas del Mundial", E.pct(a.loc["2 · Mundial como atípico", "MAPE_con_venta"], 1),
+             E.pct(a.loc["2 · Mundial como atípico", "MAPE_con_venta"] - a.loc["1 · mismos 12 rezagos", "MAPE_con_venta"], 1, True), None, "inverse"),
+            ("Leyendo el SKU y sin el pico", E.pct(a.loc[fin, "MAPE_con_venta"], 1),
+             E.pct(a.loc[fin, "MAPE_con_venta"] - ini["MAPE_con_venta"], 1, True) + " vs modelo inicial", None, "inverse"),
+        ])
+        colores = [E.VINO, E.DORADO, E.AZUL]
+        fig = go.Figure()
+        for i, pnl in enumerate(paneles):
+            d = cs[cs["panel"] == pnl].set_index("paso").reindex(pasos)
+            fig.add_trace(go.Bar(x=[p.split(" · ", 1)[1] for p in pasos], y=d["MAPE_con_venta"], name=pnl, marker_color=colores[i % 3],
+                                 customdata=np.stack([d["RMSE"], d["MAE"], d["sesgo"]], axis=1), text=[E.pct(v) for v in d["MAPE_con_venta"]],
+                                 textposition="outside", cliponaxis=False,
+                                 hovertemplate="<b>%{x}</b><br>MAPE con venta %{y:.1%}<br>RMSE %{customdata[0]:.3f} · MAE %{customdata[1]:.3f}"
+                                               "<br>sesgo %{customdata[2]:+.0%}<extra>" + pnl + "</extra>"))
+        fig.add_hline(y=ini["MAPE_con_venta"], line_dash="dot", line_color=E.COLOR_INGENUO)
+        fig.update_layout(barmode="group")
+        fig.update_yaxes(tickformat=".0%")
+        E.layout(fig, "El error baja cuando el Mundial deja de entrenar al modelo y se lee el SKU", y="MAPE en las filas con venta", alto=470)
+        E.mostrar(fig, "p5_sku")
+        E.como_leer("Mismos datos, misma partición (último 20 % de las semanas) y misma métrica que el modelo inicial del curso. "
+                    "La línea punteada es su mejor resultado. De izquierda a derecha se agrega un cambio a la vez. "
+                    "Panel A = SKU tal como viene; B = sin la última semana (solo tiene 2 días); C = prenda prefabricada (referencia + talla), con Dropi incluido.")
+        vista = pd.DataFrame({"Panel": cs["panel"], "Paso": cs["paso"], "Modelo": cs["modelo"], "MAPE con venta": cs["MAPE_con_venta"].map(lambda v: E.pct(v, 1)),
+                              "RMSE": cs["RMSE"].map(E.dec), "MAE": cs["MAE"].map(E.dec), "WAPE": cs["WAPE"].map(E.dec),
+                              "Sesgo": cs["sesgo"].map(lambda v: E.pct(v, 1, True))})
+        with st.expander("Tabla completa"):
+            E.tabla_st(vista)
+        st.caption("Límites: la media de las 4 semanas anteriores es una referencia fuerte y el modelo le gana por pocos puntos; "
+                   "en MAE el LinearSVR sigue siendo mejor porque, con tantos ceros, predecir casi cero minimiza el error absoluto.")

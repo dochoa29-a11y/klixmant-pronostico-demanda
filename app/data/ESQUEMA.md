@@ -1,7 +1,7 @@
 # Esquema del bundle de datos de la app (`app/data/`)
 
-Generado por `exportar_bundle_app()` (notebook §8.4) el 2026-11-04 15:42. **No editar a mano:** se regenera con *Run all*.
-Corte de datos: 2026-10-06 · última semana completa: 2026-09-28 · modelo: HGB_redondeo (300 iteraciones). Tamaño total: 2.9 MB.
+Generado por `exportar_bundle_app()` (notebook §8.4) el 2026-11-09 17:01. **No editar a mano:** se regenera con *Run all*.
+Corte de datos: 2026-10-06 · última semana completa: 2026-09-28 · modelo: HGB_sin_atipico (300 iteraciones). Tamaño total: 3.0 MB.
 
 - Todas las tablas son parquet (zstd), sin índice. Fechas como `datetime64`; texto como `string`.
 - Los nombres de columna se limpiaron: `%` → `pct`, `|`, espacios, `=` y `…` → `_` (p. ej. `top h=1…4 | WAPE` → `top_h_1_4_WAPE`).
@@ -31,15 +31,15 @@ Corte de datos: 2026-10-06 · última semana completa: 2026-09-28 · modelo: HGB
 | `perfil_clusters.parquet` | 4 | 84 | 15 |
 | `maestro_catalogos.parquet` | 4 | 798 | 25 |
 | `metricas_validacion_s5.parquet` | 5 | 14 | 9 |
-| `metricas_backtesting.parquet` | 5 | 7 | 13 |
+| `metricas_backtesting.parquet` | 5 | 8 | 13 |
 | `wape_por_origen_backtesting.parquet` | 5 | 15 | 7 |
-| `wape_por_horizonte_backtesting.parquet` | 5 | 28 | 5 |
-| `backtesting_total_top.parquet` | 5 | 420 | 8 |
-| `backtesting_colombia.parquet` | 5 | 420 | 7 |
-| `metricas_holdout.parquet` | 5 | 7 | 12 |
-| `diagnostico_holdout.parquet` | 5 | 7 | 5 |
-| `holdout_predicciones_top.parquet` | 5 | 840 | 9 |
-| `holdout_total_semanal.parquet` | 5 | 126 | 4 |
+| `wape_por_horizonte_backtesting.parquet` | 5 | 32 | 5 |
+| `backtesting_total_top.parquet` | 5 | 480 | 8 |
+| `backtesting_colombia.parquet` | 5 | 480 | 7 |
+| `metricas_holdout.parquet` | 5 | 8 | 12 |
+| `diagnostico_holdout.parquet` | 5 | 8 | 5 |
+| `holdout_predicciones_top.parquet` | 5 | 960 | 10 |
+| `holdout_total_semanal.parquet` | 5 | 144 | 4 |
 | `intervalos_holdout.parquet` | 5 | 120 | 7 |
 | `evaluacion_intervalos.parquet` | 5 | 4 | 4 |
 | `cobertura_por_horizonte.parquet` | 5 | 6 | 3 |
@@ -47,14 +47,15 @@ Corte de datos: 2026-10-06 · última semana completa: 2026-09-28 · modelo: HGB
 | `metricas_por_segmento.parquet` | 5 | 84 | 10 |
 | `error_por_catalogo_holdout.parquet` | 5 | 20 | 9 |
 | `importancia_permutacion.parquet` | 5 | 37 | 3 |
+| `comparacion_modelo_inicial.parquet` | 5 | 18 | 6 |
 | `cola_estado_catalogos.parquet` | 5 | 16 | 5 |
-| `pronostico_catalogo.parquet` | 6 | 6,336 | 32 |
+| `pronostico_catalogo.parquet` | 6 | 6,336 | 33 |
 | `pronostico_talla_color.parquet` | 6 | 4,824 | 37 |
 | `pronostico_tela.parquet` | 6 | 960 | 6 |
 | `revision_vs_ingenuo.parquet` | 6 | 20 | 5 |
 | `historia_semanal_catalogo.parquet` | 6 | 17,722 | 14 |
 | `diccionario_variables.parquet` | 7 | 53 | 6 |
-| `indice_figuras.parquet` | 7 | 37 | 4 |
+| `indice_figuras.parquet` | 7 | 38 | 4 |
 
 ## Columnas por archivo
 
@@ -343,7 +344,7 @@ Escalera de modelos de §5 (6 orígenes, validación preliminar). **Grano:** mod
 
 ### `metricas_backtesting.parquet`
 
-Backtesting de 15 orígenes (top 20): WAPE, sesgo, MASE, RMSSE, por fase, vs ingenuo. **Grano:** modelo. **Página:** 5. **Filas:** 7.
+Backtesting de 15 orígenes (top 20): WAPE, sesgo, MASE, RMSSE, por fase, vs ingenuo. **Grano:** modelo. **Página:** 5. **Filas:** 8.
 
 | Columna | Tipo | Descripción |
 |---|---|---|
@@ -377,6 +378,7 @@ WAPE del top por origen del backtesting y fase. **Grano:** origen. **Página:** 
 | `HGB_ingenuo` | float64 |  |
 | `HGB_redondeo` | float64 |  |
 | `HGB_poisson` | float64 |  |
+| `HGB_sin_atipico` | float64 |  |
 | `ingenuo` | float64 |  |
 | `ETS` | float64 |  |
 | `SARIMAX` | float64 |  |
@@ -384,7 +386,7 @@ WAPE del top por origen del backtesting y fase. **Grano:** origen. **Página:** 
 
 ### `wape_por_horizonte_backtesting.parquet`
 
-WAPE y sesgo del top por horizonte (backtesting). **Grano:** modelo × h. **Página:** 5. **Filas:** 28.
+WAPE y sesgo del top por horizonte (backtesting). **Grano:** modelo × h. **Página:** 5. **Filas:** 32.
 
 | Columna | Tipo | Descripción |
 |---|---|---|
@@ -397,7 +399,7 @@ WAPE y sesgo del top por horizonte (backtesting). **Grano:** modelo × h. **Pág
 
 ### `backtesting_total_top.parquet`
 
-Real vs pronóstico del total del top por modelo, origen y semana (backtesting). **Grano:** modelo × origen × semana. **Página:** 5. **Filas:** 420.
+Real vs pronóstico del total del top por modelo, origen y semana (backtesting). **Grano:** modelo × origen × semana. **Página:** 5. **Filas:** 480.
 
 | Columna | Tipo | Descripción |
 |---|---|---|
@@ -411,7 +413,7 @@ Real vs pronóstico del total del top por modelo, origen y semana (backtesting).
 
 ### `backtesting_colombia.parquet`
 
-Real vs pronóstico de la familia Colombia del top (base del titular P3). **Grano:** modelo × origen × semana. **Página:** 5. **Filas:** 420.
+Real vs pronóstico de la familia Colombia del top (base del titular P3). **Grano:** modelo × origen × semana. **Página:** 5. **Filas:** 480.
 
 | Columna | Tipo | Descripción |
 |---|---|---|
@@ -424,7 +426,7 @@ Real vs pronóstico de la familia Colombia del top (base del titular P3). **Gran
 
 ### `metricas_holdout.parquet`
 
-Holdout (24-ago → 28-sep): top h=1…4, h=1…6, cola y total semanal. **Grano:** modelo. **Página:** 5. **Filas:** 7.
+Holdout (24-ago → 28-sep): top h=1…4, h=1…6, cola y total semanal. **Grano:** modelo. **Página:** 5. **Filas:** 8.
 
 | Columna | Tipo | Descripción |
 |---|---|---|
@@ -448,7 +450,7 @@ Holdout (24-ago → 28-sep): top h=1…4, h=1…6, cola y total semanal. **Grano
 
 ### `diagnostico_holdout.parquet`
 
-Holdout con y sin el catálogo de mayor exceso (CUELLO ALTO HONDA REFLECTIVO). **Grano:** modelo. **Página:** 5. **Filas:** 7.
+Holdout con y sin el catálogo de mayor exceso (CUELLO ALTO MERCEDES). **Grano:** modelo. **Página:** 5. **Filas:** 8.
 
 | Columna | Tipo | Descripción |
 |---|---|---|
@@ -462,7 +464,7 @@ Holdout con y sin el catálogo de mayor exceso (CUELLO ALTO HONDA REFLECTIVO). *
 
 ### `holdout_predicciones_top.parquet`
 
-Predicciones del holdout para el top, todos los modelos. **Grano:** modelo × catálogo top × semana. **Página:** 5. **Filas:** 840.
+Predicciones del holdout para el top, todos los modelos. **Grano:** modelo × catálogo top × semana. **Página:** 5. **Filas:** 960.
 
 | Columna | Tipo | Descripción |
 |---|---|---|
@@ -476,7 +478,7 @@ Predicciones del holdout para el top, todos los modelos. **Grano:** modelo × ca
 
 ### `holdout_total_semanal.parquet`
 
-Holdout sumado por semana: total, top y cola, por modelo. **Grano:** modelo × segmento × semana. **Página:** 5. **Filas:** 126.
+Holdout sumado por semana: total, top y cola, por modelo. **Grano:** modelo × segmento × semana. **Página:** 5. **Filas:** 144.
 
 | Columna | Tipo | Descripción |
 |---|---|---|
@@ -545,7 +547,7 @@ Métricas por segmento, familia, periodo y horizonte (backtesting y holdout). **
 | `grupo` | str |  |
 | `WAPE` | float64 | Σ|error| / Σ real |
 | `sesgo` | float64 | Σ error / Σ real (+ = sobrepronóstico) |
-| `MAE` | float64 |  |
+| `MAE` | float64 | Error absoluto medio (uds) |
 | `uds_reales` | int64 | Unidades reales |
 | `uds_pronosticadas` | float64 | Unidades pronosticadas |
 | `n` | int64 |  |
@@ -560,13 +562,13 @@ Error del final vs ingenuo por catálogo del top en el holdout. **Grano:** catá
 | Columna | Tipo | Descripción |
 |---|---|---|
 | `catalogo` | str | Nombre del catálogo (normalizado en §4.1 salvo donde se indica) |
-| `uds_reales_HGB_redondeo` | int64 |  |
+| `uds_reales_HGB_sin_atipico` | int64 |  |
 | `uds_reales_ingenuo` | int64 |  |
-| `uds_pron_HGB_redondeo` | float64 |  |
+| `uds_pron_HGB_sin_atipico` | float64 |  |
 | `uds_pron_ingenuo` | float64 |  |
-| `WAPE_HGB_redondeo` | float64 |  |
+| `WAPE_HGB_sin_atipico` | float64 |  |
 | `WAPE_ingenuo` | float64 |  |
-| `sesgo_HGB_redondeo` | float64 |  |
+| `sesgo_HGB_sin_atipico` | float64 |  |
 | `sesgo_ingenuo` | float64 |  |
 | `rank` | int64 | Puesto por unidades |
 | `familia` | str | COLOMBIA (catálogos de la Selección) o RESTO |
@@ -580,6 +582,21 @@ Importancia por permutación (aumento del MAE). **Grano:** variable. **Página:*
 | `variable` | str |  |
 | `aumento_MAE` | float64 |  |
 | `desv` | float64 |  |
+
+### `comparacion_modelo_inicial.parquet`
+
+Comparación con el modelo inicial del curso a nivel SKU (§6.11): mismas métricas, paso a paso. **Grano:** panel × paso. **Página:** 5. **Filas:** 18.
+
+| Columna | Tipo | Descripción |
+|---|---|---|
+| `panel` | str | Unidad y semanas usadas |
+| `paso` | str | Paso de la comparación (§6.11) |
+| `modelo` | str | Nombre del modelo |
+| `MAE` | float64 | Error absoluto medio (uds) |
+| `RMSE` | float64 | Raíz del error cuadrático medio (uds) |
+| `MAPE_con_venta` | float64 | MAPE solo en las filas con venta (métrica del modelo inicial) |
+| `WAPE` | float64 | Σ|error| / Σ real |
+| `sesgo` | float64 | Σ error / Σ real (+ = sobrepronóstico) |
 
 ### `cola_estado_catalogos.parquet`
 
@@ -607,7 +624,7 @@ Pronóstico oficial (§8.2): catálogo × semana, con ingenuo, intervalo y bande
 | `semana` | datetime64 | Lunes de la semana (W-MON) |
 | `h` | int64 | Semanas hacia adelante (1 = primera semana pronosticada) |
 | `pred` | float64 | Unidades pronosticadas (publicadas) |
-| `pred_modelo` | float64 | Pronóstico del HGB_redondeo |
+| `pred_modelo` | float64 | Pronóstico del modelo final (HGB) |
 | `pred_ingenuo` | float64 | Pronóstico ingenuo (repite la última semana) |
 | `lo` | float64 | Límite inferior del intervalo 10–90 % (solo top) |
 | `hi` | float64 | Límite superior del intervalo 10–90 % (solo top) |
@@ -646,7 +663,7 @@ Suma de 4 semanas modelo vs ingenuo y bandera revisar (top). **Grano:** catálog
 | Columna | Tipo | Descripción |
 |---|---|---|
 | `catalogo` | str | Nombre del catálogo (normalizado en §4.1 salvo donde se indica) |
-| `pred_modelo` | float64 | Pronóstico del HGB_redondeo |
+| `pred_modelo` | float64 | Pronóstico del modelo final (HGB) |
 | `pred_ingenuo` | float64 | Pronóstico ingenuo (repite la última semana) |
 | `dif_rel` | float64 |  |
 | `dif_uds` | float64 |  |
@@ -677,7 +694,7 @@ Diccionario de variables del panel (§4.6). **Grano:** variable. **Página:** 7.
 
 ### `indice_figuras.parquet`
 
-Índice de figuras del plan §7.2. **Grano:** archivo. **Página:** 7. **Filas:** 37.
+Índice de figuras del plan §7.2. **Grano:** archivo. **Página:** 7. **Filas:** 38.
 
 | Columna | Tipo | Descripción |
 |---|---|---|

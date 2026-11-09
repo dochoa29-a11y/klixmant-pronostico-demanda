@@ -35,7 +35,8 @@ COLOR_EVENTO: str = DORADO_CLARO
 COLOR_PRONOSTICO: str = VINO
 COLOR_INGENUO: str = GRIS
 ESTILO_MODELO: dict = {
-    "HGB_redondeo": {"color": VINO, "dash": "solid"},
+    "HGB_sin_atipico": {"color": VINO, "dash": "solid"},
+    "HGB_redondeo": {"color": "#B9778A", "dash": "dashdot"},
     "HGB_poisson": {"color": ROSA, "dash": "solid"},
     "HGB+ingenuo": {"color": AZUL, "dash": "solid"},
     "HGB_ingenuo": {"color": AZUL, "dash": "solid"},

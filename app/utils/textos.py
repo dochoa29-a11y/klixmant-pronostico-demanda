@@ -5,7 +5,8 @@ o desde las tablas del bundle.
 """
 
 NOMBRE_MODELO = {
-    "HGB_redondeo": "Modelo final (boosting)",
+    "HGB_sin_atipico": "Modelo final (boosting, Mundial como atípico)",
+    "HGB_redondeo": "Boosting entrenado con el Mundial",
     "HGB_poisson": "Boosting Poisson",
     "HGB+ingenuo": "Boosting + ingenuo",
     "HGB_ingenuo": "Boosting + ingenuo",
@@ -31,6 +32,9 @@ GLOSARIO = {
     "Demanda desplazada": "Ventas que no desaparecen sino que se corren de semana (o de catálogo) por el evento. Es una hipótesis por validar.",
     "Ingenuo": "El pronóstico más simple: «la próxima semana se vende lo mismo que la última». Es la vara contra la que se mide todo modelo.",
     "Media móvil": "Promedio de las últimas 4 semanas. Tras un pico (como el Mundial) arrastra el pico hacia adelante.",
+    "Dato atípico": "Un valor que no representa el comportamiento normal. Klixmant pidió tratar así el pico del Mundial: es cada cuatro años y no sirve para proyectar un junio cualquiera.",
+    "SKU": "Código de la prenda: género · tela · largo · color · talla · proceso (BOR/ES) · reflectivo (RV). Ej.: «H N L NEGRO L ES RV».",
+    "MAPE con venta": "Error porcentual promedio calculado solo en las filas donde hubo venta. Es la métrica del modelo inicial del curso.",
     "WAPE": "Error porcentual ponderado: de cada 100 unidades vendidas, cuántas se equivocó el pronóstico (sumando excesos y faltantes). Menor es mejor.",
     "Sesgo": "Si el pronóstico, en total, se pasa (+) o se queda corto (−). Un sesgo positivo significa producir de más.",
     "MASE": "Error comparado con el del ingenuo: menos de 1 = mejor que repetir la última semana; más de 1 = peor.",
@@ -143,14 +147,16 @@ COMO_LEER = {
         "WAPE del top según cuántas semanas hacia adelante se pronostica. Lo normal es que el error crezca con el horizonte."
     ),
     "holdout": (
-        "El holdout son las últimas semanas, que ningún modelo vio. A nivel de catálogo del top el ingenuo gana; "
-        "a nivel del **total semanal** (lo que importa para planear la planta) el modelo final se equivoca menos."
+        "El holdout son las últimas semanas (24-ago → 28-sep). Con el Mundial tratado como atípico, el modelo final queda a la par o mejor "
+        "que el ingenuo por catálogo y se equivoca menos en el **total semanal** (lo que importa para planear la planta). "
+        "Ojo: esa decisión se tomó con el holdout ya abierto, así que estas cifras son indicativas."
     ),
     "holdout_total": (
         "Unidades totales por semana en el holdout: real (negro) contra cada modelo. Elija los modelos en la leyenda."
     ),
     "honda": (
-        "Un solo catálogo explica casi todo el sobrepronóstico del holdout. Aquí se ve semana a semana: real, modelo final e ingenuo."
+        "El catálogo que más pesa en el sobrepronóstico del holdout, semana a semana: real, modelo final e ingenuo. "
+        "Con el modelo anterior (entrenado con el Mundial) ese catálogo era Honda Reflectivo, que explicaba casi todo el exceso."
     ),
     "intervalos": (
         "Cobertura = % de semanas en que la venta real cayó dentro del intervalo. El objetivo es 80 % (línea punteada). "
