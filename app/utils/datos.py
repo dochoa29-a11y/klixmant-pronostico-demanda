@@ -13,9 +13,18 @@ DOCS = DATA / "docs"
 FIGURAS = DATA / "figuras"
 
 
-@st.cache_data(show_spinner=False)
+def _version(ruta: Path) -> int:
+    """Fecha de modificación del archivo: entra en la clave de la caché para que un despliegue con datos nuevos no muestre los viejos."""
+    return ruta.stat().st_mtime_ns
+
+
 def tabla(nombre: str) -> pd.DataFrame:
     """Lee app/data/<nombre>.parquet. Texto como object para que funcione igual con pandas 2 y 3."""
+    return _tabla(nombre, _version(DATA / f"{nombre}.parquet"))
+
+
+@st.cache_data(show_spinner=False)
+def _tabla(nombre: str, version: int) -> pd.DataFrame:
     df = pd.read_parquet(DATA / f"{nombre}.parquet")
     for c in df.columns:
         if pd.api.types.is_string_dtype(df[c]) and not pd.api.types.is_object_dtype(df[c]):
@@ -23,9 +32,13 @@ def tabla(nombre: str) -> pd.DataFrame:
     return df
 
 
-@st.cache_data(show_spinner=False)
 def cifras() -> dict:
     """cifras_clave.json completo (kpi, h3…h8, constantes, paleta, metadata_modelo)."""
+    return _cifras(_version(DATA / "cifras_clave.json"))
+
+
+@st.cache_data(show_spinner=False)
+def _cifras(version: int) -> dict:
     return json.loads((DATA / "cifras_clave.json").read_text(encoding="utf-8"))
 
 
@@ -37,7 +50,6 @@ def constantes() -> dict:
     return cifras()["constantes"]
 
 
-@st.cache_data(show_spinner=False)
 def documento(nombre: str) -> str:
     """Markdown copiado en app/data/docs/ por app/copiar_docs.py."""
     ruta = DOCS / nombre
@@ -50,15 +62,18 @@ def figura(nombre: str) -> Path:
 
 # ---------- tablas derivadas (pequeñas, en caché) ----------
 
-@st.cache_data(show_spinner=False)
 def historia_y_pronostico() -> tuple[pd.DataFrame, pd.DataFrame]:
     """Historia semanal y pronóstico oficial, con el segmento (top/cola)."""
     return tabla("historia_semanal_catalogo"), tabla("pronostico_catalogo")
 
 
-@st.cache_data(show_spinner=False)
 def curvas_cluster() -> pd.DataFrame:
     """Curva semanal promedio por clúster: cada catálogo normalizado por su total (participación semanal)."""
+    return _curvas_cluster(_version(DATA / "historia_semanal_catalogo.parquet"))
+
+
+@st.cache_data(show_spinner=False)
+def _curvas_cluster(version: int) -> pd.DataFrame:
     hist = tabla("historia_semanal_catalogo")
     maestro = tabla("maestro_catalogos")[["catalogo", "cluster"]]
     df = hist.merge(maestro, on="catalogo", how="left")
